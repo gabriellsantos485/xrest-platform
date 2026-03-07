@@ -2,59 +2,56 @@
  * File: category_items_sheet.dart
  * Author: Elite Software Architect Agent
  * Date: 2026-03-01
- * Description: Bottom sheet displaying items of a specific category with add-to-cart functionality.
+ * Description: Bottom sheet displaying dynamically filtered items from the domain entity.
  */
 
 import 'package:flutter/material.dart';
+import '../../domain/entities/menu_item_entity.dart';
 import 'menu_item_tile.dart';
 
 class CategoryItemsSheet extends StatelessWidget {
   final String categoryName;
+  final List<MenuItemEntity> items;
 
-  const CategoryItemsSheet({super.key, required this.categoryName});
+  const CategoryItemsSheet({super.key, required this.categoryName, required this.items});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.85, // Takes 85% of screen height
+      height: MediaQuery.of(context).size.height * 0.85,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
       child: Column(
         children: [
-          // Header Image matching the tapped category
           Container(
             height: 120,
             width: double.infinity,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-              color: Colors.grey, // Placeholder for category image
+              color: Colors.grey,
             ),
             padding: const EdgeInsets.all(16),
             alignment: Alignment.topLeft,
             child: Text(
               categoryName,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
 
-          // Scrollable List of Items
           Expanded(
-            child: ListView.builder(
+            child: items.isEmpty
+                ? const Center(child: Text('Nenhum item disponível nesta categoria.'))
+                : ListView.builder(
               padding: const EdgeInsets.all(16),
-              itemCount: 4, // Mocked item count
+              itemCount: items.length,
               itemBuilder: (context, index) {
-                return const MenuItemTile();
+                return MenuItemTile(item: items[index]);
               },
             ),
           ),
 
-          // Confirmation Button at the bottom
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: SizedBox(
@@ -62,18 +59,11 @@ class CategoryItemsSheet extends StatelessWidget {
               height: 55,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF10B981), // Green color
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
+                  backgroundColor: const Color(0xFF10B981),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 ),
-                onPressed: () {
-                  Navigator.pop(context); // Close sheet and theoretically add to cart
-                },
-                child: const Text(
-                  'Adicionar',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Concluir Seleção', style: TextStyle(fontSize: 18, color: Colors.white)),
               ),
             ),
           ),

@@ -35,8 +35,62 @@ class MenuMockRepositoryImpl implements IMenuRepository {
     const MenuItemEntity(
       id: 3,
       name: 'Pudim de Leite',
-      unitPrice: 12.00,
+      unitPrice: 13.00,
       description: 'Fatia de pudim tradicional com calda de caramelo.',
+      photoUrl: 'assets/images/pudim.png',
+      isAvailable: true,
+      categoryId: 3, // Sobremesas
+    ),
+    const MenuItemEntity(
+      id: 4,
+      name: 'Bolo de Chocolate',
+      unitPrice: 1.00,
+      description: 'Fatia de bolo tradicional com calda de chocolate.',
+      photoUrl: 'assets/images/pudim.png',
+      isAvailable: true,
+      categoryId: 3, // Sobremesas
+    ),
+    const MenuItemEntity(
+      id: 5,
+      name: 'Bolo de Baunilha',
+      unitPrice: 1.00,
+      description: 'Fatia de bolo tradicional com calda de baunilha.',
+      photoUrl: 'assets/images/pudim.png',
+      isAvailable: true,
+      categoryId: 3, // Sobremesas
+    ),
+    const MenuItemEntity(
+      id: 6,
+      name: 'Bolo de Morango',
+      unitPrice: 1.00,
+      description: 'Fatia de bolo tradicional com calda de morango.',
+      photoUrl: 'assets/images/pudim.png',
+      isAvailable: true,
+      categoryId: 3, // Sobremesas
+    ),
+    const MenuItemEntity(
+      id: 7,
+      name: 'Bolo de Formigueiro',
+      unitPrice: 1.00,
+      description: 'Fatia de bolo tradicional com calda de formigas.',
+      photoUrl: 'assets/images/pudim.png',
+      isAvailable: true,
+      categoryId: 3, // Sobremesas
+    ),
+    const MenuItemEntity(
+      id: 8,
+      name: 'Bolo de Leite',
+      unitPrice: 1.00,
+      description: 'Fatia de bolo tradicional com calda de leite.',
+      photoUrl: 'assets/images/pudim.png',
+      isAvailable: true,
+      categoryId: 3, // Sobremesas
+    ),
+    const MenuItemEntity(
+      id: 9,
+      name: 'Bolo de Laranja',
+      unitPrice: 1.00,
+      description: 'Fatia de bolo tradicional com calda de laranja.',
       photoUrl: 'assets/images/pudim.png',
       isAvailable: true,
       categoryId: 3, // Sobremesas

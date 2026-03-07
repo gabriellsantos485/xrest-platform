@@ -7,7 +7,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xrest_customer/features/auth/presentation/state/auth_bloc.dart';
 
+import 'features/order/presentation/state/history/order_history_bloc.dart';
+import 'features/splash/presentation/page/splash_page.dart';
+import 'features/splash/presentation/state/splash_bloc.dart';
 import 'injection_container.dart' as di;
 import 'features/menu/presentation/pages/menu_page.dart';
 import 'features/order/presentation/state/cart_bloc.dart';
@@ -31,24 +35,21 @@ class XRestCustomerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // The CartBloc is provided globally since the cart is accessible anywhere
-        BlocProvider<CartBloc>(
-          create: (_) => di.sl<CartBloc>(),
-        ),
-        // The MenuBloc is provided and immediately fetches the available menu
-        BlocProvider<MenuBloc>(
-          create: (_) => di.sl<MenuBloc>()..add(const FetchAvailableMenuEvent()),
-        ),
+        BlocProvider<CartBloc>(create: (_) => di.sl<CartBloc>()),
+        BlocProvider<MenuBloc>(create: (_) => di.sl<MenuBloc>()),
+        BlocProvider<SplashBloc>(create: (_) => di.sl<SplashBloc>()),
+        BlocProvider<AuthBloc>(create: (_) => di.sl<AuthBloc>()),
+        BlocProvider<OrderHistoryBloc>(create: (_) => di.sl<OrderHistoryBloc>()),
       ],
       child: MaterialApp(
         title: 'X-REST Customer',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primaryColor: const Color(0xFFFF8C00), // Primary Orange
+          primaryColor: const Color(0xFFFF8C00),
           scaffoldBackgroundColor: Colors.white,
           useMaterial3: true,
         ),
-        home: const MenuPage(), // Our previously built Menu UI
+        home: const SplashPage(), // Initial route is now the Splash!
       ),
     );
   }
