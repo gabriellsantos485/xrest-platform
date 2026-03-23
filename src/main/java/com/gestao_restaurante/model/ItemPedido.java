@@ -14,7 +14,7 @@ public class ItemPedido {
     }//End Constructor
 
     public double subTotal(){
-        return item.getValor() * quantidade;
+        return item.getPreco() * quantidade;
     }
 
     //Getters and Setters
