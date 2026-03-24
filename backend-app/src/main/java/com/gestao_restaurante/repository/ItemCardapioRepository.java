@@ -1,7 +1,10 @@
-package com.gestao_restaurante.repository;
+/*package com.gestao_restaurante.repository;
 import com.gestao_restaurante.model.Cardapio;
 import org.springframework.boot.web.error.Error;
 
+ */
+
+/*
 public class ItemCardapioRepository {
     private Arraylist <Cardapio> itensCardapio;
 
@@ -29,3 +32,5 @@ public class ItemCardapioRepository {
         return false;
     }
 }
+
+ */

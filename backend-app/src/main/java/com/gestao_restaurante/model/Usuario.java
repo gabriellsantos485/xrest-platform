@@ -1,40 +1,57 @@
 package com.gestao_restaurante.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
 
-    private String login;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String email;
+    private String cpf;
     private String senha;
-    private String username;
 
-    //Constructor
-    public Usuario(String login, String senha, String username) {
-        this.login = login;
+    // Construtor vazio (obrigatório pro JPA)
+    public Usuario(String email, String cpf, String senha) {
+        this.email = email;
+        this.cpf = cpf;
         this.senha = senha;
-        this.username = username;
-    }//End Constructor
+    }
 
-    //Getters and Setters
-    public String getLogin() {return login;}
+    public Usuario() {}
 
-    public void setLogin(String login) {this.login = login;}
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha) {this.senha = senha;}
-
-    public String getUsername() {return username;}
-
-    public void setUsername(String username) {this.username = username;}//End Getters and Setters
-
-    //To String
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "login='" + login + '\'' +
-                ", senha='" + senha + '\'' +
-                ", username='" + username + '\'' +
-                '}';
-    }//End To String
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 }

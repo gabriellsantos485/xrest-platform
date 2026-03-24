@@ -1,5 +1,6 @@
-package com.gestao_restaurante.model;
+/*package com.gestao_restaurante.model;*/
 
+/*
 public class Mesa {
 
     private int numero;
@@ -58,3 +59,5 @@ public class Mesa {
     }//End ToString
 
 }
+
+ */

@@ -1,4 +1,4 @@
-package com.gestao_restaurante.x_rest;
+package com.gestao_restaurante;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

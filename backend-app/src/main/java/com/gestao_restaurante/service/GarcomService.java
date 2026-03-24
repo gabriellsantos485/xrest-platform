@@ -1,7 +1,12 @@
-package com.gestao_restaurante.service;
+/*package com.gestao_restaurante.service;
 
 import com.gestao_restaurante.model.Mesa;
+import org.springframework.stereotype.Service;
 
+ /*
+ /*
+
+@Service
 public class GarcomService {
 
     public void enviarPedidoParaCozinha(int numeroMesa){
@@ -9,3 +14,5 @@ public class GarcomService {
         mesa.enviarPedidoParaCozinha();
     }
 }
+
+ */

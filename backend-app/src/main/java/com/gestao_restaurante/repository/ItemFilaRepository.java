@@ -4,6 +4,7 @@ import com.gestao_restaurante.model.ItemFila;
 import com.gestao_restaurante.model.ItemPedido;
 import java.util.ArrayList;
 
+/*
 public class ItemFilaRepository {
     private ArrayList <ItemFila> filaPedidos;
 
@@ -23,3 +24,5 @@ public class ItemFilaRepository {
         }
     }
 }
+
+ */
