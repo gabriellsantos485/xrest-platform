@@ -35,5 +35,9 @@ public class ItemFila extends ItemPedido{
     public void setObservacao(String observacao) {
         super.setObservacao(observacao);
     }
+
+    public void enviarItemProntoParaGarcom() {
+
+    }
 }
 

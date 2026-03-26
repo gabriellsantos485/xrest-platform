@@ -1,9 +1,12 @@
-package com.gestao_restaurante.repository;
+/*package com.gestao_restaurante.repository;
 import com.gestao_restaurante.model.Cardapio;
 import com.gestao_restaurante.model.Categoria;
 import org.springframework.boot.web.error.Error;
 import java.util.ArrayList;
 
+ */
+
+/*
 public class CardapioRepository {
 
     private ArrayList <Cardapio> itensCardapio;
@@ -15,7 +18,7 @@ public class CardapioRepository {
     public boolean adicionarItemCardapio(int codigo, String nome, Categoria categoria, String urlFoto, double preco){
         for(Cardapio i : itensCardapio){
             if(i.getCodigo() == codigo){
-                throw new Error("Valor existente! O codigo precisa ser unico");
+                //throw new Error("Valor existente! O codigo precisa ser unico");
                 return false;
             }
         }
@@ -55,7 +58,7 @@ public class CardapioRepository {
                                i.getNome() +
                                i.getCategoria() +
                                i.getUrlFoto() + "\n"
-                                )
+                                );
         }
     }
 
@@ -68,3 +71,5 @@ public class CardapioRepository {
     }
 
 }
+
+ */

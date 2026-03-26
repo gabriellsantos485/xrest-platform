@@ -1,10 +1,12 @@
-package com.gestao_restaurante.repository;
+/*package com.gestao_restaurante.repository;
 
 import com.gestao_restaurante.model.Mesa;
 
 import java.util.ArrayList;
 
+ */
 
+/*
 public class MesaRepository {
     private ArrayList<Mesa> mesas;
 
@@ -28,3 +30,4 @@ public class MesaRepository {
         }
     }
 }
+ */

@@ -3,6 +3,7 @@ package com.gestao_restaurante.model;
 import com.gestao_restaurante.repository.PedidoRepository;
 import jakarta.persistence.GeneratedValue;
 
+/*
 public class Pedido {
 
     private int codigo;
@@ -64,3 +65,4 @@ public class Pedido {
     }//End ToString
 
 }
+ */
