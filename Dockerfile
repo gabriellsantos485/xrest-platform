@@ -13,7 +13,7 @@ RUN mvn dependency:go-offline -B
 
 # 3. CORREÇÃO: Copia a pasta src que está dentro de 'backend'
 # para a pasta 'src' dentro do container
-COPY backend-app/src ./src
+COPY src ./src
 
 # 4. Executa o build
 RUN mvn clean package -DskipTests
