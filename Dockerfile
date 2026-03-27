@@ -22,4 +22,4 @@ EXPOSE 8080
 
 ENV JAVA_OPTS="-Xmx300m -Xss512k"
 
-ENTRYPOINT ["java", "-Xmx300m", "-Xss512k", "-Dserver.port=8080", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Xmx300m", "-Xss512k", "-jar", "app.jar"]
