@@ -20,8 +20,6 @@ COPY --from=build /app/backend-app/target/*.jar app.jar
 
 EXPOSE 8080
 
-# Limite de memória para o plano Free do Render
 ENV JAVA_OPTS="-Xmx300m -Xss512k"
 
-# O comando 'sh -c' garante que as variáveis de ambiente sejam expandidas corretamente
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:8080} -jar app.jar"]
+ENTRYPOINT ["java", "-Xmx300m", "-Xss512k", "-Dserver.port=8080", "-jar", "app.jar"]
