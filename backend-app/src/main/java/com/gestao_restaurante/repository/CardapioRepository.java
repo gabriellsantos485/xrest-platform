@@ -1,75 +1,23 @@
-/*package com.gestao_restaurante.repository;
+package com.gestao_restaurante.repository;
 import com.gestao_restaurante.model.Cardapio;
 import com.gestao_restaurante.model.Categoria;
-import org.springframework.boot.web.error.Error;
+import com.gestao_restaurante.model.StatusCardapio;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import javax.smartcardio.Card;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
- */
 
-/*
-public class CardapioRepository {
+public interface CardapioRepository extends JpaRepository<Cardapio, Integer> {
+    boolean existsByNome(String nome);
 
-    private ArrayList <Cardapio> itensCardapio;
+    @Override
+    List<Cardapio> findAll();
 
-    public CardapioRepository() {
-        this.itensCardapio = new ArrayList<>();
-    }
+    List<Cardapio> findByCategoriaId(Integer categoriaId);
 
-    public boolean adicionarItemCardapio(int codigo, String nome, Categoria categoria, String urlFoto, double preco){
-        for(Cardapio i : itensCardapio){
-            if(i.getCodigo() == codigo){
-                //throw new Error("Valor existente! O codigo precisa ser unico");
-                return false;
-            }
-        }
-        itensCardapio.add(new Cardapio(codigo, nome, categoria, urlFoto, preco));
-        return true;
-    }
-
-    public boolean excluirItemCardapio(int codigo){
-        for(Cardapio i : itensCardapio){
-            if(i.getCodigo() == codigo){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean atualizarItemCardapio(int codigo,
-                                        String nome,
-                                        Categoria categoria,
-                                        String urlFoto,
-                                        double preco){
-        for(Cardapio i : itensCardapio){
-            if(i.getCodigo() == codigo){
-                i.setNome(nome);
-                i.setCategoria(categoria);
-                i.setUrlFoto(urlFoto);
-                i.setPreco(preco);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void listarItensCardapio(){
-        for(Cardapio i: itensCardapio){
-            System.out.println(i.getCodigo() +
-                               i.getNome() +
-                               i.getCategoria() +
-                               i.getUrlFoto() + "\n"
-                                );
-        }
-    }
-
-    public Cardapio buscarItemCardapioCodigo(int codigo){
-        for(Cardapio i : itensCardapio){
-            if(i.getCodigo() == codigo)
-                return i;
-        }
-        return null;
-    }
-
+    List<Cardapio> findByStatus(StatusCardapio status);
 }
-
- */

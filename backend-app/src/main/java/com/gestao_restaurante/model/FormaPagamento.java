@@ -2,25 +2,23 @@ package com.gestao_restaurante.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
-@Table(name = "categoria", schema = "x_rest")
+@Table(name = "forma_pagamento", schema = "x_rest")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Categoria {
-
+public class FormaPagamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cat_id")
+    @Column(name = "fpa_id")
     private Integer id;
 
-    @Column(name = "cat_nome", length = 30, nullable = false, unique = true)
+    @Column(name = "fpa_nome", length = 20, unique = true)
     @NotBlank
-    @Size(max = 30, min = 3)
     private String nome;
+
 }

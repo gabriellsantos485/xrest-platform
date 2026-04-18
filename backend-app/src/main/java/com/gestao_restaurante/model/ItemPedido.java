@@ -1,55 +1,93 @@
 package com.gestao_restaurante.model;
 
+import com.fasterxml.jackson.databind.annotation.EnumNaming;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+
+@Entity
+@Table(name = "item_pedido", schema = "x_rest")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ItemPedido {
 
-    private Cardapio item;
-    private int quantidade;
-    private String observacao;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ipe_id")
+    private Integer id;
 
-    //Constructor
-    public ItemPedido(Cardapio item, int quantidade, String observacao){
-        this.item = item;
-        this.quantidade = quantidade;
-        this.observacao = observacao.equals("")? "Sem observacoes": observacao;
-    }//End Constructor
+    @Column(name = "ipe_quantidade", nullable = false)
+    @NotNull
+    @Min(1)
+    private Integer quantidade;
 
-    public double subTotal(){
-        return item.getPreco() * quantidade;
-    }
+    @Column(name = "ipe_valor_unitario", nullable = false)
+    @NotNull
+    @DecimalMin("0.0")
+    private BigDecimal valor_unitario;
 
-    //Getters and Setters
-    public Cardapio getItem() {
-        return item;
-    }
+    @Column(name = "ipe_valor_descontado", nullable = false)
+    @DecimalMin("0.0")
+    @Builder.Default
+    @NotNull
+    private BigDecimal valor_descontado = BigDecimal.ZERO;
 
-    public void setItem(Cardapio item) {
-        this.item = item;
-    }
+    @Column(name = "ipe_valor_total", nullable = false)
+    @DecimalMin("0.0")
+    @NotNull
+    private BigDecimal valor_total;
 
-    public int getQuantidade() {
-        return quantidade;
-    }
+    @Column(name = "ipe_criado_em", nullable = false, updatable = false)
+    @NotNull
+    @CreationTimestamp
+    private OffsetDateTime criadoEm;
 
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
-    }
+    @Column(name = "ipe_observacoes", nullable = false, updatable = false, length = 60)
+    private String observacoes;
 
-    public String getObservacao() {
-        return observacao;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ipe_status", nullable = false)
+    @Builder.Default
+    private ItemPedidoStatus status = ItemPedidoStatus.NAO_INICIADO;
 
-    public void setObservacao(String observacao) {
-        this.observacao = observacao;
-    }//End Getters and Setters
+    @ManyToOne
+    @JoinColumn(
+            name = "ped_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "ped_id")
+    )
+    private Pedido pedido;
 
-    //ToString '
-    @java.lang.Override
-    public java.lang.String toString() {
-        return "ItemPedido{" +
-                "item=" + item +
-                ", quantidade=" + quantidade +
-                ", observacao='" + observacao + '\'' +
-                '}';
-    }//End ToString
+    @ManyToOne
+    @JoinColumn(
+            name = "car_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "car_id")
+    )
+    private Cardapio cardapio;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "fun_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fun_id")
+    )
+    private Funcionario funcionario;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "fun_funcionario_liberou",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fun_id")
+    )
+    private  Funcionario funcionario_liberou;
 }

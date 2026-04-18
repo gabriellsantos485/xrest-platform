@@ -2,6 +2,7 @@ package com.gestao_restaurante.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -26,8 +27,8 @@ public record ClienteRequestDTO(
         @NotBlank(message = "Bairro é obrigatório")
         String bairro,
 
-        @NotBlank(message = "Número da casa é obrigatório")
-        String numeroCasa,
+        @NotNull(message = "Número da casa é obrigatório")
+        Integer numeroCasa,
 
         @NotBlank(message = "Rua é obrigatória")
         String rua,

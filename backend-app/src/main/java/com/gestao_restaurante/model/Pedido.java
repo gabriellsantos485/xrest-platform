@@ -1,68 +1,92 @@
 package com.gestao_restaurante.model;
 
-import com.gestao_restaurante.repository.PedidoRepository;
-import jakarta.persistence.GeneratedValue;
 
-/*
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+
+
+@Entity
+@Table(name = "pedido", schema = "x_rest")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Pedido {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ped_id")
+    private Integer id;
 
-    private int codigo;
-    private double Valortotal;
-    private String data;
+    @Column(name = "ped_viagem", nullable = false)
+    @NotNull
+    @Builder.Default
+    private Boolean viagem = false;
 
-    //Constructor
-    public Pedido(){
+    @Column(name = "ped_criado_em", nullable = false, updatable = false)
+    @NotNull
+    @CreationTimestamp
+    private OffsetDateTime criadoEm;
 
-    }//End Constructor
+    @Column(name = "ped_atualizado_em")
+    @org.hibernate.annotations.UpdateTimestamp
+    private OffsetDateTime atualizadoEm;
 
-    public double total(){
-        for(ItemPedido i : itens)
-            Valortotal += i.subTotal();
-        return Valortotal;
-    }
+    @Column(name = "ped_valor_total", precision = 7, scale = 2)
+    @NotNull
+    @DecimalMin("0.0")
+    private BigDecimal valorTotal;
 
-    public void mostrarPedido(){
-        System.out.println("\n=============Pedido Atual=============");
-        if(itens.isEmpty()){
-            System.out.println("Nenhum item no pedido");
-            return;
-        }
-        for(ItemPedido i : itens){
-            System.out.println(i);
-            System.out.println("=============");
-            System.out.println("Total: R$" + total());
-            System.out.println("=============");
-        }
-    }
-    public ItemPedido getItemPedido(int index){
-        return itens.index(index);
-    }
+    @Column(name = "ped_valor_pago", precision = 7, scale = 2)
+    @DecimalMin("0.0")
+    private BigDecimal valorPago;
 
-    //Getters and Setters
-    public double getValorTotal(){
-        return Valortotal;
-    }
-    public void setValortotal(double valortotal) {
-        Valortotal = valortotal;
-    }
-    public String getData() {
-        return data;
-    }
-    public void setData(String data) {
-        this.data = data;
-    }//End Getters and Setters
-    public int getCodigo() {return codigo;}
-    public void setCodigo(int codigo) {this.codigo = codigo;}
+    @Column(name = "ped_desconto", precision = 7, scale = 2)
+    @DecimalMin("0.0")
+    private BigDecimal desconto;
 
-    //ToString
-    @Override
-    public String toString() {
-        return "Pedido{" +
-                "codigo=" + codigo +
-                ", Valortotal=" + Valortotal +
-                ", data='" + data + '\'' +
-                '}';
-    }//End ToString
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ped_status", nullable = false)
+    @NotNull
+    private PedidoStatus status;
 
+    @Column(name = "ped_quant_pessoas", nullable = false, columnDefinition = "INTEGER DEFAULT 1")
+    @Min(1)
+    @NotNull
+    private Integer quantidadePessoas;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(
+            name = "cli_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "cli_id")
+    )
+    private Cliente cliente;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(
+            name = "mesa_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "mesa_id")
+    )
+    private Mesa mesa;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(
+            name = "fun_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fun_id")
+    )
+    private Funcionario funcionario;
 }
- */

@@ -4,15 +4,14 @@ import java.time.LocalDateTime;
 
 // senha nunca é retornada na resposta
 public record ClienteResponseDTO(
-        Long id,
+        Integer id,
         String nome,
         String sobrenome,
         String cpf,
         String email,
         String cidade,
         String bairro,
-        String numeroCasa,
+        Integer numeroCasa,
         String rua,
-        String telefone,
-        LocalDateTime criadoEm
+        String telefone
 ) {}

@@ -1,63 +1,35 @@
-/*package com.gestao_restaurante.model;*/
+package com.gestao_restaurante.model;
 
-/*
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.type.descriptor.jdbc.SmallIntJdbcType;
+
+@Entity
+@Table(name = "mesa", schema = "x_rest")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Mesa {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "mesa_id")
+    private Integer id;
 
-    private int numero;
-    private Pedido pedido;
-    private boolean estadoMesa;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "mesa_status", nullable = false)
+    @NotBlank
+    private MesaStatus status;
 
-    //Constructor
-    //- Pacote Service -
-    public Mesa(int numero){
-        if(numero < 1 || numero > 20)
-            throw new IllegalArgumentException("Mesa Invalida");
-        else {
-            this.numero = numero;
-            this.pedido = new Pedido();
-            this.estadoMesa = false;
-        }
-    }//End Constructor
+    @Column(name = "mesa_localizacao", length = 1, nullable = false, columnDefinition = "VARCHAR(1) DEFAULT 'B'")
+    @NotBlank
+    private String localizacao;
 
-    //Metodo para ativar mesa. Agora estadoMesa é igual a true.
-    public void ativarMesa(){
-        if(pedido.getPedido().percorrendoListaItens() == 0)
-            estadoMesa = true;
-    }
-
-    //Metodo para fechar conta, mostra pedido, mesa e desocupa mesa. estadoMesa é igual a false, novamente;
-    public void fecharConta(){
-        System.out.println("\n================");
-        System.out.println("Conta da Mesa: " + numero);
-        pedido.mostrarPedido();
-        estadoMesa = false;
-        System.out.println("\nConta encerrada");
-        System.out.println("\n================");
-    }
-
-    //Getters and Setters
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public Pedido getPedido(){
-        return pedido;
-    }//End Getters and Setters
-
-    //ToString
-    @java.lang.Override
-    public java.lang.String toString() {
-        return "Mesa{" +
-                "numero=" + numero +
-                ", pedido=" + pedido +
-                ", estadoMesa=" + estadoMesa +
-                '}';
-    }//End ToString
-
+    @Column(name = "mesa_capacidade", nullable = false)
+    @NotBlank
+    private Short capacidade;
 }
 
- */

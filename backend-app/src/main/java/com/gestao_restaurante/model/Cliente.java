@@ -1,6 +1,10 @@
 package com.gestao_restaurante.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -8,7 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "cliente")
+@Table(name = "cliente", schema = "x_rest")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,42 +22,57 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "cli_id")
+    private Integer id;
 
-    @Column(nullable = false)
+    @Column(name = "cli_nome", nullable = false, length = 60)
+    @NotBlank
+    @Size(max = 60)
     private String nome;
 
-    @Column(nullable = false)
+    @Column(name = "cli_sobrenome",nullable = false, length = 60)
+    @NotBlank
+    @Size(max = 60)
     private String sobrenome;
 
-    @Column(unique = true)
+    @Column(name = "cli_cpf", length = 14, unique = true)
+    @NotBlank
+    @Size(max = 14, min = 11)
     private String cpf;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "cli_email", nullable = false, unique = true, length = 80)
+    @NotBlank
+    @Size(max = 80)
+    @Email
     private String email;
 
-    @Column(nullable = false)
-    private String cidade;
-
-    @Column(nullable = false)
-    private String bairro;
-
-    @Column(nullable = false)
-    private String numeroCasa;
-
-    @Column(nullable = false)
-    private String rua;
-
-    @Column(nullable = false, unique = true)
+    @Column(name = "cli_telefone", nullable = false, unique = true, length = 13)
+    @NotBlank
+    @Size(max = 13)
     private String telefone;
 
-    @Column(nullable = false)
-    private String senha;
+    @Column(name = "cli_numero", nullable = false)
+    @NotBlank
+    private Integer numeroCasa;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime criadoEm;
+    @Column(name = "cli_rua", nullable = false, length = 40)
+    @NotBlank
+    @Size(max = 40)
+    private String rua;
 
-    @UpdateTimestamp
-    private LocalDateTime atualizadoEm;
+    @Column(name = "cli_bairro", nullable = false, length = 100)
+    @NotBlank
+    @Size(max = 100)
+    private String bairro;
+
+    @Column(name = "cli_cidade", nullable = false, length = 60)
+    @NotBlank
+    @Size(max = 60)
+    private String cidade;
+
+    @Column(name = "cli_password", nullable = false, length = 255)
+    @NotBlank
+    @Size(max = 255)
+    private String password;
+
 }
