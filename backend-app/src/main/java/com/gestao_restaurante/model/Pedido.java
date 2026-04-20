@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 
 @Entity
@@ -89,4 +90,10 @@ public class Pedido {
             foreignKey = @ForeignKey(name = "fun_id")
     )
     private Funcionario funcionario;
+
+    private List<ItemPedido> itensPedido;
+    //É uma coluna de pedidos?
+    //R: ItemPedido tem a chave estrangeira de pedido. Desta Forma vários itens podem ser relacionados com pedido.
+    //Pedido não tem a coluna ItemPedido. ItemPedido que tem a coluna Pedido.
+    //Esse atributo não é uma coluna da tabela pedidos.
 }
