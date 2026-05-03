@@ -9,5 +9,6 @@ public record RelatorioResponseDTO(
         List<Pedido> pedidos,
         Long quantidadeVendas,
         BigDecimal valorTotalVendas,
+        BigDecimal valorPorHora,
         List<ItemMaisVendidoDTO> itensMaisVendidos
 ) {}

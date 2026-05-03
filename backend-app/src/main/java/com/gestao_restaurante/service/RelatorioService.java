@@ -5,6 +5,10 @@ import com.gestao_restaurante.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+
+import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
 @Service
 public class RelatorioService{
@@ -20,10 +24,18 @@ public class RelatorioService{
     }
 
     public RelatorioResponseDTO gerarRelatorio() {
+
+        LocalDate hoje = LocalDate.now();
+        LocalDateTime agora = LocalDateTime.now();
+
         return new RelatorioResponseDTO(
-                pedidoRepository.pedidosPorData(LocalDate.now()),
-                pedidoRepository.quantidadeVendas(LocalDate.now()),
-                pedidoRepository.valorTotalVendas(LocalDate.now()),
+                pedidoRepository.pedidosPorData(hoje),
+                pedidoRepository.quantidadeVendas(hoje),
+                pedidoRepository.valorTotalVendas(hoje),
+                pedidoRepository.pedidosPorHora(
+                        agora.minusHours(1),
+                        agora
+                ),
                 itemPedidoRepository.itensMaisVendidos()
         );
     }

@@ -8,6 +8,8 @@ import com.gestao_restaurante.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -84,6 +86,14 @@ public class PedidoService {
         public List<Pedido> verHistoricoPedidos(){
             return pedidoRepository.findAll();
         }
+
+        public BigDecimal vendasPorHora(LocalDate data, int hora) {
+            LocalDateTime inicio = data.atTime(hora, 0);
+            LocalDateTime fim = inicio.plusHours(1);
+
+            return pedidoRepository.pedidosPorHora(inicio, fim);
+        }
+
 
 }
 
