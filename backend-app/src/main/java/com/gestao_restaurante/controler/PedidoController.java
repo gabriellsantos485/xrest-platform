@@ -16,6 +16,7 @@ public class PedidoController {
     public PedidoController(PedidoService pedidoService){
         this.pedidoService = pedidoService;
     }
+
     @GetMapping
     public List<Pedido> listarPedidosEmAndamento(){
         return pedidoService.verFilaPedido();
