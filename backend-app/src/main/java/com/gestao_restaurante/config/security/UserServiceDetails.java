@@ -19,7 +19,7 @@ public class UserServiceDetails implements UserDetailsService {
         Cliente cliente = repo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        return new ClientePrincipal(cliente); //UserPrincipal implements UserDetails. Não fiz a classe por motivos óbvios, o foco é segurança
+        return new ClientePrincipal(cliente); //ClientePrincipal implements UserDetails.
     }
 
 }

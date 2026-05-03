@@ -14,9 +14,14 @@ public class ClienteController{
     @Autowired
     private ClienteService service;
 
-    @PostMapping("\registrar")
+    @PostMapping("/registrar")
     public Cliente registrar(@RequestBody ClienteRequestDTO dto){
         return service.registrar(dto);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody ClienteRequestDTO dto){
+        return service.login(dto);
     }
 }
 
