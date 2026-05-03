@@ -10,37 +10,22 @@ import java.time.LocalDate;
 public class RelatorioService{
 
     private PedidoRepository pedidoRepository;
-    private MesaRepository mesaRepository;
-    private ClienteRepository clienteRepository;
     private ItemPedidoRepository itemPedidoRepository;
-    private CozinhaRepository cozinhaRepository;
-    private GarcomRepository garcomRepository;
 
     public RelatorioService(PedidoRepository pedidoRepository,
-                     MesaRepository mesaRepository,
-                     ClienteRepository clienteRepository,
-                     ItemPedidoRepository itemPedidoRepository,
-                     CozinhaRepository cozinhaRepository,
-                     GarcomRepository garcomRepository) {
+                     ItemPedidoRepository itemPedidoRepository) {
 
         this.pedidoRepository = pedidoRepository;
-        this.mesaRepository = mesaRepository;
-        this.clienteRepository = clienteRepository;
         this.itemPedidoRepository = itemPedidoRepository;
-        this.cozinhaRepository = cozinhaRepository;
-        this.garcomRepository = garcomRepository;
     }
 
-    public RelatorioResponseDTO gerarRelatorio(LocalDate date) {
+    public RelatorioResponseDTO gerarRelatorio() {
         return new RelatorioResponseDTO(
-                pedidoRepository.pedidosPorData(date),
-                mesaRepository.mesasMaisUsadas(),
-                clienteRepository.clientesMaisFrequentes(),
-                itemPedidoRepository.itensMaisVendidos(),
-                cozinhaRepository.itensTempoMedioDePreparo(),
-                garcomRepository.garcomVendasMensal()
+                pedidoRepository.pedidosPorData(LocalDate.now()),
+                pedidoRepository.quantidadeVendas(LocalDate.now()),
+                pedidoRepository.valorTotalVendas(LocalDate.now()),
+                itemPedidoRepository.itensMaisVendidos()
         );
     }
 }
 
-}
