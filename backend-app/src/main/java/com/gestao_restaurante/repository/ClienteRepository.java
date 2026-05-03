@@ -4,6 +4,7 @@ import com.gestao_restaurante.model.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.lang.ScopedValue;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +16,5 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     Optional<Cliente> findByEmail(String email);
     Optional<Cliente> findByCpf(String cpf);
+    Optional<Cliente> findByUsername(String username);
 }

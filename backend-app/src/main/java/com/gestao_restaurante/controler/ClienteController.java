@@ -1,5 +1,6 @@
 package com.gestao_restaurante.controler;
 
+import com.gestao_restaurante.dto.ClienteRequestDTO;
 import com.gestao_restaurante.model.Cliente;
 import com.gestao_restaurante.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class ClienteController{
     private ClienteService service;
 
     @PostMapping("\registrar")
-    public Cliente registrar(@RequestBody Cliente cliente){
-        return service.registrar(cliente);
+    public Cliente registrar(@RequestBody ClienteRequestDTO dto){
+        return service.registrar(dto);
     }
 }
 

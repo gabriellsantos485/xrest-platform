@@ -1,15 +1,21 @@
 package com.gestao_restaurante.service;
 
+import com.gestao_restaurante.dto.ClienteRequestDTO;
+import com.gestao_restaurante.mapper.CardapioMapper;
+import com.gestao_restaurante.mapper.ClienteMapper;
+import com.gestao_restaurante.model.Cardapio;
 import com.gestao_restaurante.model.Cliente;
 import com.gestao_restaurante.repository.ClienteRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -22,45 +28,49 @@ import java.util.Map;
 
 public class ClienteService {
 
-    @Autowired
-    public ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
+    private final AuthenticationManager authManager;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AuthenticationManager authManager;
+    public ClienteService(ClienteRepository clienteRepository,
+                          AuthenticationManager authManager,
+                          PasswordEncoder passwordEncoder){
+        this.clienteRepository = clienteRepository;
+        this.authManager = authManager;
+        this.passwordEncoder = passwordEncoder;
 
+    }
+    // Colocar chave secreta no application.properties
+    @Value("${jwt.secret}")
     private String secretKey;
 
-    private BCryptPasswordEncoder criptografar = new BCryptPasswordEncoder(12);
+    /*
+        Algoritmo para gerar a chave:
 
-    public Cliente registrar(Cliente cliente){
-        cliente.setPassword(criptografar.encode(cliente.getPassword()));
+        KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
+        keyGen.init(256);
+        SecretKey key = keyGen.generateKey();
+        System.out.println(Base64.getEncoder().encodeToString(key.getEncoded()));
+    */
+
+    public Cliente registrar(ClienteRequestDTO dto){
+        Cliente cliente = ClienteMapper.toEntity(dto);
+        cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
         return clienteRepository.save(cliente);
 
     }
-    public Key getKey(){
-        try {
-            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-            keyGen.init(256);
-            SecretKey sk = keyGen.generateKey();
-            secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
 
+    public Key getKey(){
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     public String generateToken(String username){
-        Map<String, Object> claims = new HashMap<>();
+
         return Jwts.builder()
-                .claims()
-                .add(claims)
-                .subject(username)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
-                .and()
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                 .signWith(getKey())
                 .compact();
     }
@@ -75,6 +85,6 @@ public class ClienteService {
         if(authentication.isAuthenticated()){
             return generateToken(cliente.getNome());
         }
-        return "Fail";
+        throw new RuntimeException("Credenciais inválidas");
     }
 }
