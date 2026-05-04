@@ -12,4 +12,7 @@ public interface PedidoRepositoryCustom {
     Long quantidadeVendas(LocalDate date);
     BigDecimal valorTotalVendas(LocalDate data);
     BigDecimal pedidosPorHora(LocalDateTime inicio, LocalDateTime fim);
+    List<Pedido> pedidosEmAndamento();
+    List<Pedido> pedidosCancelados(LocalDate date);
+    String escolherMesa(Integer id);
 }

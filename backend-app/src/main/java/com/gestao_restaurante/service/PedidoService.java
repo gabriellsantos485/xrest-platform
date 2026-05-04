@@ -1,8 +1,9 @@
 package com.gestao_restaurante.service;
 
 
-import com.gestao_restaurante.model.ItemPedido;
-import com.gestao_restaurante.model.Pedido;
+import com.gestao_restaurante.dto.PedidoRequestDTO;
+import com.gestao_restaurante.mapper.PedidoMapper;
+import com.gestao_restaurante.model.*;
 import com.gestao_restaurante.repository.MesaRepository;
 import com.gestao_restaurante.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
@@ -10,10 +11,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PedidoService {
@@ -21,7 +19,6 @@ public class PedidoService {
         private PedidoRepository pedidoRepository;
         private MesaRepository mesaRepository;
         private List<Pedido> pedidos;
-        private Pedido pedido;
 
         public PedidoService(PedidoRepository pedidoRepository, MesaRepository mesaRepository, List<Pedido> pedidos){
             this.mesaRepository = mesaRepository;
@@ -30,14 +27,19 @@ public class PedidoService {
         }
 
         public Pedido abrirPedido(){
-            return new Pedido();
+            return pedidoRepository.save(new Pedido());
         }
-        /*
-        public void escolherMesa(Integer numero){
-            mesaRepository.findById(numero).
-                    orElseThrow(() -> new NoSuchElementException("\nERRO - Mesa não encontrada!!\n"));
 
-        }*/
+        public void escolherMesa(Integer id){
+           String resposta = pedidoRepository.escolherMesa(id);
+
+           if("Sucesso".equals(resposta)){
+               Mesa mesa = mesaRepository.findById(id)
+                               .orElseThrow(() -> new NoSuchElementException("\nERRO - Mesa nao esta vazia!!\n"));
+               mesa.setStatus(MesaStatus.LOTADA);
+           }
+
+        }
 
         public int adicionarItens(ItemPedido itemPedido){
             if(!pedidos.isEmpty()) {
@@ -72,15 +74,21 @@ public class PedidoService {
         public void fecharPedido(Integer codigoPedido){
             Pedido pedido = consultarPedido(codigoPedido).
                             orElseThrow(() -> new NoSuchElementException("\nERRO - Pedido não encontrado!!\n"));
+            pedido.setStatus(PedidoStatus.CONCLUÍDO);
             pedidoRepository.save(pedido);
         }
 
-        public BigDecimal dividirValor(Pedido pedido){
+        public BigDecimal dividirValor(PedidoRequestDTO dto){
+            Pedido pedido = PedidoMapper.toEntity(dto);
             return pedido.getValorTotal().divide(BigDecimal.valueOf(pedido.getQuantidadePessoas()), 2);
         }
 
-        public List<Pedido> verFilaPedido(){
-            return this.pedidos;
+        public List<Pedido> pedidosEmAndamento(){
+            return pedidoRepository.pedidosEmAndamento();
+        }
+
+        public List<Pedido> pedidosCancelados(LocalDate data){
+            return pedidoRepository.pedidosCancelados(data);
         }
 
         public List<Pedido> verHistoricoPedidos(){

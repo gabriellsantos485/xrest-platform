@@ -91,6 +91,13 @@ public class Pedido {
     )
     private Funcionario funcionario;
 
+    @NotNull
+    @OneToMany
+    @JoinColumn(
+            name = "itp_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "itp_id")
+    )
     private List<ItemPedido> itensPedido;
     //É uma coluna de pedidos?
     //R: ItemPedido tem a chave estrangeira de pedido. Desta Forma vários itens podem ser relacionados com pedido.
