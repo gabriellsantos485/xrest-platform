@@ -1,6 +1,12 @@
 package com.gestao_restaurante.repository;
-/*
-public interface FuncionarioRepository extends JpaRepository<Funcionario, Integer>{
+
+import com.gestao_restaurante.model.Funcionario;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface FuncionarioRepository extends JpaRepository<Funcionario, Integer> {
+
 }
 
- */
+

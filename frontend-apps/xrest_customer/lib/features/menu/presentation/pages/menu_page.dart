@@ -77,7 +77,8 @@ class _MenuPageState extends State<MenuPage> {
                     const SizedBox(height: 24),
                     _buildBestSellersSection(),
                     const SizedBox(height: 24),
-                    _buildCategoryList(context, state.items),
+
+                    _buildCategoryList(context, state.groupedItems),
                   ],
                 ),
               ),
@@ -186,32 +187,30 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  Widget _buildCategoryList(BuildContext context,
-      List<MenuItemEntity> allItems) {
-    // Dictionary matching visual categories to the mocked IDs
-    final categories = {
-      'Pratos': 1,
-      'Bebidas': 2,
-      'Sobremesas': 3,
-      'Mais Pedidos': 4,
-      'Prato do dia': 5
-    };
+  Widget _buildCategoryList(BuildContext context, Map<String, List<MenuItemEntity>> groupedItems) {
+
+    // Safety check if menu is completely empty
+    if (groupedItems.isEmpty) {
+      return const Center(child: Text('Nenhum item disponível.', style: TextStyle(color: Colors.grey)));
+    }
 
     return Column(
-      children: categories.entries.map((entry) {
+      // Maps over the dynamic keys (Category Names) provided by the Spring Boot API
+      children: groupedItems.entries.map((entry) {
+        final categoryName = entry.key;
+        final itemsInCategory = entry.value;
+
         return GestureDetector(
           onTap: () {
-            // Filters items in memory before passing to the modal
-            final filteredItems = allItems.where((item) =>
-            item.categoryId == entry.value).toList();
-
+            // No need to filter here anymore! The BLoC already grouped them perfectly.
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
-              builder: (context) =>
-                  CategoryItemsSheet(
-                  categoryName: entry.key, items: filteredItems),
+              builder: (context) => CategoryItemsSheet(
+                categoryName: categoryName,
+                items: itemsInCategory, // Passes the pre-filtered list directly
+              ),
             );
           },
           child: Container(
@@ -220,15 +219,17 @@ class _MenuPageState extends State<MenuPage> {
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Colors.grey[800],
+              color: Colors.grey[800], // Suggestion: Use Theme.of(context) instead of fixed colors
             ),
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.all(16),
             child: Text(
-              entry.key,
-              style: const TextStyle(color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
+              categoryName,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         );

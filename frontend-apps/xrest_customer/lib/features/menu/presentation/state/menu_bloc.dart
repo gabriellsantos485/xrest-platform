@@ -1,59 +1,57 @@
 /*
  * File: menu_bloc.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-01
- * Description: Orchestrates the business flow, transforming MenuEvents into discrete MenuStates.
+ * Author: Lua (Elite Flutter Agent)
+ * Date: 2026-04-18
+ * Description: BLoC updated to handle alphabetical sorting of categories and items.
  */
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:collection'; // For SplayTreeMap if needed, but we'll use a simpler approach
+import '../../domain/repositories/i_menu_repository.dart';
+import '../../domain/entities/menu_item_entity.dart';
 import 'menu_event.dart';
 import 'menu_state.dart';
-import '../../domain/repositories/i_menu_repository.dart';
 
-/// Manages the state of the Menu feature.
-/// Depends strictly on abstractions (IMenuRepository), adhering to the Dependency Inversion Principle.
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
-  final IMenuRepository _menuRepository;
+  final IMenuRepository repository;
 
-  MenuBloc({required IMenuRepository menuRepository})
-      : _menuRepository = menuRepository,
-        super(const MenuInitial()) {
-    on<FetchAvailableMenuEvent>(_onFetchAvailableMenu);
-    on<FetchMenuByCategoryEvent>(_onFetchMenuByCategory);
+  MenuBloc({required this.repository}) : super(MenuInitial()) {
+    on<FetchAvailableMenuEvent>(_onFetchMenu);
   }
 
-  /// Handles the request to fetch all available menu items.
-  Future<void> _onFetchAvailableMenu(
-      FetchAvailableMenuEvent event,
-      Emitter<MenuState> emit,
-      ) async {
-    emit(const MenuLoading());
+  Future<void> _onFetchMenu(FetchAvailableMenuEvent event, Emitter<MenuState> emit) async {
+    emit(MenuLoading());
     try {
-      final items = await _menuRepository.getAvailableMenuItems();
+      final items = await repository.getAvailableMenuItems();
 
-      if (items.isEmpty) {
-        emit(const MenuError(message: 'Nenhum item disponível no momento.'));
-        return;
+      // 1. Initial grouping
+      final Map<String, List<MenuItemEntity>> groupedData = {};
+      for (var item in items) {
+        if (!groupedData.containsKey(item.categoryName)) {
+          groupedData[item.categoryName] = [];
+        }
+        groupedData[item.categoryName]!.add(item);
       }
 
-      emit(MenuLoaded(items: items));
-    } catch (e) {
-      // In a production environment, 'e' should be parsed into a specific Failure class.
-      emit(const MenuError(message: 'Falha ao carregar o cardápio. Tente novamente mais tarde.'));
-    }
-  }
+      // 2. Sorting Categories (Keys) alphabetically
+      final sortedCategoryNames = groupedData.keys.toList()
+        ..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
 
-  /// Handles the request to fetch menu items filtered by category.
-  Future<void> _onFetchMenuByCategory(
-      FetchMenuByCategoryEvent event,
-      Emitter<MenuState> emit,
-      ) async {
-    emit(const MenuLoading());
-    try {
-      final items = await _menuRepository.getMenuItemsByCategory(event.categoryId);
-      emit(MenuLoaded(items: items));
+      // 3. Creating a new sorted Map and sorting Items within each category
+      final Map<String, List<MenuItemEntity>> sortedGroupedData = LinkedHashMap();
+
+      for (var category in sortedCategoryNames) {
+        final categoryItems = groupedData[category]!;
+
+        // Sorting items alphabetically by name
+        categoryItems.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+
+        sortedGroupedData[category] = categoryItems;
+      }
+
+      emit(MenuLoaded(groupedItems: sortedGroupedData));
     } catch (e) {
-      emit(const MenuError(message: 'Falha ao carregar a categoria selecionada.'));
+      emit(MenuError(message: e.toString()));
     }
   }
 }

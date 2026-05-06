@@ -33,25 +33,24 @@ public class ItemPedido {
     @Column(name = "ipe_valor_unitario", nullable = false)
     @NotNull
     @DecimalMin("0.0")
-    private BigDecimal valor_unitario;
+    private BigDecimal valorUnitario;
 
     @Column(name = "ipe_valor_descontado", nullable = false)
     @DecimalMin("0.0")
     @Builder.Default
     @NotNull
-    private BigDecimal valor_descontado = BigDecimal.ZERO;
+    private BigDecimal valorDescontado = BigDecimal.ZERO;
 
     @Column(name = "ipe_valor_total", nullable = false)
     @DecimalMin("0.0")
     @NotNull
-    private BigDecimal valor_total;
+    private BigDecimal valorTotal;
 
     @Column(name = "ipe_criado_em", nullable = false, updatable = false)
-    @NotNull
     @CreationTimestamp
     private OffsetDateTime criadoEm;
 
-    @Column(name = "ipe_observacoes", nullable = false, updatable = false, length = 60)
+    @Column(name = "ipe_observacoes", nullable = true, updatable = false, length = 60)
     private String observacoes;
 
     @Enumerated(EnumType.STRING)
@@ -78,7 +77,7 @@ public class ItemPedido {
     @ManyToOne
     @JoinColumn(
             name = "fun_id",
-            nullable = false,
+            nullable = true,
             foreignKey = @ForeignKey(name = "fun_id")
     )
     private Funcionario funcionario;
@@ -86,7 +85,7 @@ public class ItemPedido {
     @ManyToOne
     @JoinColumn(
             name = "fun_funcionario_liberou",
-            nullable = false,
+            nullable = true,
             foreignKey = @ForeignKey(name = "fun_id")
     )
     private  Funcionario funcionario_liberou;

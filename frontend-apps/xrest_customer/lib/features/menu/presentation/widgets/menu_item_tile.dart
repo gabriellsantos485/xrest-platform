@@ -1,7 +1,7 @@
 /*
  * File: menu_item_tile.dart
  * Author: Elite Software Architect Agent
- * Date: 2026-03-01
+ * Date: 2026-04-18
  * Description: Reactive widget representing a single menu item. Listens to CartBloc to reflect accurate quantities.
  */
 
@@ -30,10 +30,23 @@ class MenuItemTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundColor: Colors.grey[300],
-            // backgroundImage: AssetImage(item.photoUrl ?? ''),
+          // ATUALIZADO: Mantém a exata estética do CircleAvatar, mas com suporte seguro a NetworkImages
+          ClipOval(
+            child: Container(
+              width: 80, // Equivalente ao radius: 40 (40 * 2)
+              height: 80,
+              color: Colors.grey[300],
+              child: item.photoUrl.isNotEmpty
+                  ? Image.network(
+                item.photoUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  // Fallback caso a URL venha quebrada do backend
+                  return const Icon(Icons.broken_image, color: Colors.grey);
+                },
+              )
+                  : const Icon(Icons.fastfood, color: Colors.grey),
+            ),
           ),
           const SizedBox(width: 12),
 
@@ -97,7 +110,7 @@ class MenuItemTile extends StatelessWidget {
                     } else {
                       // Regra: Se tem mais de 1, enviamos uma instrução de decréscimo (delta: -1)
                       final decrementItem = OrderItemEntity(
-                          menuItem: item,
+                        menuItem: item,
                         quantity: -1, // A mágica acontece aqui: somar -1 diminui o valor!
                         unitPrice: item.unitPrice,
                       );

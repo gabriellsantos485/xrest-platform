@@ -3,6 +3,7 @@ import com.gestao_restaurante.model.Cardapio;
 import com.gestao_restaurante.model.Categoria;
 import com.gestao_restaurante.model.StatusCardapio;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.smartcardio.Card;
 import java.math.BigDecimal;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
+@Repository
 public interface CardapioRepository extends JpaRepository<Cardapio, Integer> {
     boolean existsByNome(String nome);
 

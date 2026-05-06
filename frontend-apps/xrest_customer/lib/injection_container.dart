@@ -5,6 +5,7 @@
  * Description: Service Locator configuration using get_it. Wires up all layers of the Clean Architecture.
  */
 
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xrest_customer/features/auth/presentation/state/auth_bloc.dart';
 import 'package:xrest_customer/features/splash/presentation/state/splash_bloc.dart';
@@ -32,13 +33,13 @@ Future<void> init() async {
   // Bloc
   // Registered as a Factory because we usually want a fresh instance
   // every time the user accesses the Menu page.
-  sl.registerFactory(() => MenuBloc(menuRepository: sl()));
+  sl.registerFactory(() => MenuBloc(repository: sl<IMenuRepository>()));
 
   // Repository
   // Registered as a LazySingleton to save memory; it's only instantiated
   // the first time sl<IMenuRepository>() is called.
   sl.registerLazySingleton<IMenuRepository>(
-        () => MenuMockRepositoryImpl(),
+        () => MenuRemoteRepositoryImpl(Dio()),
   );
 
   // ===========================================================================

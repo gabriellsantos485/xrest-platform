@@ -1,0 +1,16 @@
+package com.gestao_restaurante.mapper;
+
+import com.gestao_restaurante.dto.MesaRequestDTO;
+import com.gestao_restaurante.dto.MesaResponseDTO;
+import com.gestao_restaurante.model.Mesa;
+
+public class MesaMapper {
+
+    public static Mesa toEntity(MesaRequestDTO dto){
+        return Mesa.builder().build();
+    }
+
+    public static MesaResponseDTO toDTO(Mesa entity){
+        return new MesaResponseDTO();
+    }
+}

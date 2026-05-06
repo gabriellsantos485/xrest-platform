@@ -1,14 +1,19 @@
 package com.gestao_restaurante.dto;
 
+import com.gestao_restaurante.model.FuncionarioCargo;
+
 import java.time.OffsetDateTime;
 
 public record FuncionarioResponseDTO(
         Integer id,
         String nome,
         String sobrenome,
-        String username,
         String telefone,
+        String email,
+        FuncionarioCargo cargo,
+        Boolean status,
         OffsetDateTime criadoEm,
-        OffsetDateTime atualizadoEm
+        OffsetDateTime atualizadoEm,
+        String username
 ) {
 }

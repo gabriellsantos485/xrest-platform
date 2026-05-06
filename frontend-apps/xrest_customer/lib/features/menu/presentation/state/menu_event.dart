@@ -29,3 +29,4 @@ final class FetchMenuByCategoryEvent extends MenuEvent {
   @override
   List<Object?> get props => [categoryId];
 }
+

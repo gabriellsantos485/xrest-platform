@@ -9,6 +9,7 @@ import com.gestao_restaurante.model.Categoria;
 import com.gestao_restaurante.model.StatusCardapio;
 import com.gestao_restaurante.repository.CardapioRepository;
 import com.gestao_restaurante.repository.CategoriaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,40 @@ public class CardapioService {
                         item -> item.getCategoria().getNome(),
                         Collectors.mapping(CardapioMapper::toDTO, Collectors.toList())
                 ));
+    }
+
+    public CardapioResponseDTO atualizar(Integer id, CardapioRequestDTO dto){
+        Categoria categoria = categoriaRepository.findById(dto.categoriaId())
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+
+        Cardapio produto = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        produto.setNome(dto.nome());
+        produto.setValorUnidade(dto.valorUnidade());
+        produto.setUnidadeMedida(dto.unidadeMedida());
+        produto.setDescricao(dto.descricao());
+        produto.setIngredientes(dto.ingredientes());
+        produto.setPorcoesPorPessoa(dto.porcoesPorPessoa());
+        produto.setInicioPromocao(dto.inicioPromocao());
+        produto.setValorPromocional(dto.valorPromocional());
+        produto.setTerminoPromocao(dto.terminoPromocao());
+        produto.setFoto(dto.foto());
+        produto.setStatus(dto.status());
+        produto.setCategoria(categoria);
+
+        repository.save(produto);
+
+        return CardapioMapper.toDTO(produto);
+    }
+
+    public CardapioResponseDTO apagar(Integer id) {
+        Cardapio produto = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        produto.setStatus(StatusCardapio.INATIVO);
+        repository.save(produto);
+        return CardapioMapper.toDTO(produto);
     }
 }
 

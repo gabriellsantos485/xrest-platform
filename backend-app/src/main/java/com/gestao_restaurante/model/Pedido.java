@@ -32,7 +32,6 @@ public class Pedido {
     private Boolean viagem = false;
 
     @Column(name = "ped_criado_em", nullable = false, updatable = false)
-    @NotNull
     @CreationTimestamp
     private OffsetDateTime criadoEm;
 
@@ -54,9 +53,10 @@ public class Pedido {
     private BigDecimal desconto;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ped_status", nullable = false)
     @NotNull
-    private PedidoStatus status;
+    @Builder.Default
+    @Column(name = "ped_status", nullable = false)
+    private PedidoStatus status = PedidoStatus.EM_ANDAMENTO;
 
     @Column(name = "ped_quant_pessoas", nullable = false, columnDefinition = "INTEGER DEFAULT 1")
     @Min(1)

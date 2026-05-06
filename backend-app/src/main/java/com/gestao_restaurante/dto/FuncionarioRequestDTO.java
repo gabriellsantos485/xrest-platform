@@ -16,17 +16,20 @@ public record FuncionarioRequestDTO(
         @NotBlank(message = "Telefone é obrigatório")
         String telefone,
 
-        @NotBlank(message = "Cargo é obrigatório")
-        FuncionarioCargo cargo,
-
         @NotBlank(message = "Email é obrigatório")
         String email,
 
-        @NotBlank(message = "Senha é obrigatório")
-        @Size(min = 8, message = "Senha deve ter no mínimo 8 caracteres")
-        String senha,
+        @NotBlank(message = "Cargo é obrigatório")
+        FuncionarioCargo cargo,
+
+        @NotBlank(message = "Status é obrigatório")
+        Boolean status,
 
         @NotBlank(message = "Username é obrigatório")
         @Size(min = 10, message = "Username deve ter no mínimo 8 caracteres")
-        String username
+        String username,
+
+        @NotBlank(message = "Senha é obrigatório")
+        @Size(min = 8, message = "Senha deve ter no mínimo 8 caracteres")
+        String senha
 ) { }

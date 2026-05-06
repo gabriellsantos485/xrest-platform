@@ -1,47 +1,35 @@
 /*
  * File: menu_state.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-01
- * Description: Defines the discrete UI states for the Menu feature. Ensures predictable rendering.
+ * Author: Lua (Elite Flutter Agent)
+ * Date: 2026-04-18
+ * Description: Defines the states for the Menu feature.
  */
 
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/menu_item_entity.dart';
 
-/// Base state class for the Menu feature.
-/// Sealed to ensure exhaustive pattern matching in the UI layer (Dart 3+).
-sealed class MenuState extends Equatable {
+abstract class MenuState extends Equatable {
   const MenuState();
 
   @override
   List<Object?> get props => [];
 }
 
-/// Initial state before any interaction or data fetching occurs.
-final class MenuInitial extends MenuState {
-  const MenuInitial();
-}
+class MenuInitial extends MenuState {}
 
-/// Indicates an ongoing asynchronous operation.
-/// UI should react by displaying a shimmer effect or loading spinner.
-final class MenuLoading extends MenuState {
-  const MenuLoading();
-}
+class MenuLoading extends MenuState {}
 
-/// Represents a successful data retrieval.
-/// Carries the immutable list of menu items to be rendered by the UI.
-final class MenuLoaded extends MenuState {
-  final List<MenuItemEntity> items;
+class MenuLoaded extends MenuState {
+  // The UI will use this map to dynamically build categories
+  final Map<String, List<MenuItemEntity>> groupedItems;
 
-  const MenuLoaded({required this.items});
+  const MenuLoaded({required this.groupedItems});
 
   @override
-  List<Object?> get props => [items];
+  List<Object?> get props => [groupedItems];
 }
 
-/// Represents a failure during data retrieval.
-/// Carries an error message for user feedback or logging.
-final class MenuError extends MenuState {
+class MenuError extends MenuState {
   final String message;
 
   const MenuError({required this.message});
