@@ -19,8 +19,8 @@ public class Categoria {
     @Column(name = "cat_id")
     private Integer id;
 
-    @Column(name = "cat_nome", length = 30, nullable = false, unique = true)
+    @Column(name = "cat_nome", length = 60, nullable = false, unique = true)
     @NotBlank
-    @Size(max = 30, min = 3)
+    @Size(max = 60, min = 3)
     private String nome;
 }

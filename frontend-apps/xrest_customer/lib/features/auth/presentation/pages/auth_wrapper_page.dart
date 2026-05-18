@@ -1,11 +1,3 @@
-/*
- * File: auth_wrapper_page.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-06
- * Description: Acts as an Auth Guard. Listens to the global AuthBloc and dynamically
- * routes the user to either the Login/Register flow or their Profile page.
- */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

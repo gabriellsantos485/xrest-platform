@@ -1,11 +1,3 @@
-/*
- * File: splash_page.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-06
- * Description: Splash screen UI featuring a 60fps 'Chasing Border' animation
- * around a static SVG logo, integrated with SplashBloc for safe routing.
- */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';

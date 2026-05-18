@@ -1,10 +1,3 @@
-/*
- * File: user.dart
- * Author: Elite Flutter Agent
- * Date: 2026-05-01
- * Description: Core business entity representing an authenticated user (Employee/Admin).
- */
-
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {

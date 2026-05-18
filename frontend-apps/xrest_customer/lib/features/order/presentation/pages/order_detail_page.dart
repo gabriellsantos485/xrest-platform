@@ -1,10 +1,3 @@
-/*
- * File: order_detail_page.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-06
- * Description: Detail view showing read-only items and granular status per item.
- */
-
 import 'package:flutter/material.dart';
 import '../../domain/entities/order_entity.dart';
 import '../../domain/entities/order_item_entity.dart';

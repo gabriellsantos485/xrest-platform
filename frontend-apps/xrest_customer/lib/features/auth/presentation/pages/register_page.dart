@@ -1,11 +1,3 @@
-/*
- * File: register_page.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-06
- * Description: Comprehensive registration UI with input masks, regex email validation,
- * fragmented address fields, and cross-field password confirmation.
- */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -73,23 +65,27 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _submitRegistration() {
     if (_formKey.currentState!.validate()) {
-      // Constructs a single address string to match the current ClientEntity contract.
-      // In a later refactoring, the Entity itself should be updated to hold fragmented address objects.
-      final fullAddress = '${_streetCtrl.text}, ${_numberCtrl.text} - ${_complementCtrl.text} - ${_neighborhoodCtrl.text}, ${_cityCtrl.text}. CEP: ${_cepCtrl.text}';
 
-      final newClient = ClientEntity(
-        id: 'temp_id_123',
-        firstName: _firstNameCtrl.text.trim(),
-        lastName: _lastNameCtrl.text.trim(),
-        cpf: _cpfCtrl.text.trim(), // Consider stripping mask characters before sending to API
-        phone: _phoneCtrl.text.trim(),
-        email: _emailCtrl.text.trim(),
-        address: fullAddress,
-      );
+      // Remove caracteres especiais das máscaras para enviar apenas os números
+      final cleanCpf = _cpfCtrl.text.replaceAll(RegExp(r'[^0-9]'), '');
+      final cleanPhone = _phoneCtrl.text.replaceAll(RegExp(r'[^0-9]'), '');
+      final numCasa = int.tryParse(_numberCtrl.text.trim()) ?? 0;
 
-      context.read<AuthBloc>().add(
-        RegisterClientEvent(newClient: newClient, password: _passwordCtrl.text),
-      );
+      final Map<String, dynamic> payload = {
+        "nome": _firstNameCtrl.text.trim(),
+        "sobrenome": _lastNameCtrl.text.trim(),
+        "cpf": cleanCpf,
+        "email": _emailCtrl.text.trim(),
+        "cidade": _cityCtrl.text.trim(),
+        "bairro": _neighborhoodCtrl.text.trim(),
+        "numeroCasa": numCasa,
+        "rua": _streetCtrl.text.trim(),
+        "telefone": cleanPhone,
+        "senha": _passwordCtrl.text
+      };
+
+      // Dispara o evento enviando o JSON pronto
+      context.read<AuthBloc>().add(RegisterClientEvent(payload: payload));
     }
   }
 

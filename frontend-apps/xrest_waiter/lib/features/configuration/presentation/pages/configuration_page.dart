@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:xrest_waiter/features/configuration/presentation/pages/cliente_config_form.dart';
+import 'package:xrest_waiter/features/configuration/presentation/pages/pagamento_config_form.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'cardapio_config_form.dart';
 import 'funcionario_config_form.dart';
+import 'mesa_config_form.dart';
 
 class ConfigurationPage extends StatefulWidget {
   const ConfigurationPage({super.key});
@@ -19,6 +22,9 @@ class _ConfigurationPageState extends State<ConfigurationPage> with TickerProvid
   // 2. AS PONTES: Chaves Globais para acessar as funções de busca de cada aba
   final GlobalKey<CardapioConfigFormState> _cardapioFormKey = GlobalKey<CardapioConfigFormState>();
   final GlobalKey<FuncionarioConfigFormState> _funcionarioFormKey = GlobalKey<FuncionarioConfigFormState>(); // <-- Nova chave
+  final GlobalKey<ClienteConfigFormState> _clienteFormKey = GlobalKey<ClienteConfigFormState>();
+  final GlobalKey<MesaConfigFormState> _mesaFormKey = GlobalKey<MesaConfigFormState>();
+  final GlobalKey<PagamentoConfigFormState> _pagamentoFormKey = GlobalKey<PagamentoConfigFormState>();
 
   @override
   void initState() {
@@ -113,12 +119,14 @@ class _ConfigurationPageState extends State<ConfigurationPage> with TickerProvid
             children: [
               CardapioConfigForm(key: _cardapioFormKey),
 
-              _buildConfigContent('Formulário de Cliente'),
+
+
+              ClienteConfigForm(key: _clienteFormKey),
 
               FuncionarioConfigForm(key: _funcionarioFormKey),
 
-              _buildConfigContent('Formulário de Mesa'),
-              _buildConfigContent('Formulário de Pagamento'),
+              MesaConfigForm(key: _mesaFormKey),
+              PagamentoConfigForm(key: _pagamentoFormKey)
             ],
           ),
         ),

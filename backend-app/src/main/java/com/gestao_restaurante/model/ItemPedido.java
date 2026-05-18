@@ -30,18 +30,18 @@ public class ItemPedido {
     @Min(1)
     private Integer quantidade;
 
-    @Column(name = "ipe_valor_unitario", nullable = false)
+    @Column(name = "ipe_valor_unitario", nullable = false, precision = 7, scale = 2)
     @NotNull
     @DecimalMin("0.0")
     private BigDecimal valorUnitario;
 
-    @Column(name = "ipe_valor_descontado", nullable = false)
+    @Column(name = "ipe_valor_descontado", nullable = false, precision = 7, scale = 2)
     @DecimalMin("0.0")
     @Builder.Default
     @NotNull
     private BigDecimal valorDescontado = BigDecimal.ZERO;
 
-    @Column(name = "ipe_valor_total", nullable = false)
+    @Column(name = "ipe_valor_total", nullable = false, precision = 7, scale = 2)
     @DecimalMin("0.0")
     @NotNull
     private BigDecimal valorTotal;

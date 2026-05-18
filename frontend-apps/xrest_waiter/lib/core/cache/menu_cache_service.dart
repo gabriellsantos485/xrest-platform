@@ -59,7 +59,7 @@ class MenuCacheService {
   Future<void> fetchMenuFromServer(Dio client) async {
     print('Iniciando busca do cardápio no servidor...');
     try {
-      final response = await client.get('http://192.168.18.102:8080/xrest/produtos/');
+      final response = await client.get('http://192.168.18.102:8080/xrest/produtos');
 
       if (response.statusCode == 200) {
         parseAndPopulate(response.data as Map<String, dynamic>);
@@ -86,14 +86,14 @@ class MenuCacheService {
         // ID 0 = CREATE (POST)
         print('Iniciando POST para novo produto...');
         response = await client.post(
-          'http://192.168.18.102:8080/xrest/produtos/',
+          'http://localhost:8080/xrest/produtos',
           data: payload,
         );
       } else {
         // ID > 0 = UPDATE (PUT) passando o ID na URL
         print('Iniciando PUT para atualizar produto ID ${product.id}...');
         response = await client.put(
-          'http://192.168.18.102:8080/xrest/produtos/${product.id}',
+          'http://localhost:8080/xrest/produtos/${product.id}',
           data: payload,
         );
       }

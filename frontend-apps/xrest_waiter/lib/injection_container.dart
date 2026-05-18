@@ -7,10 +7,15 @@
 
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:xrest_waiter/core/cache/pedido_cache_service.dart';
 
 import 'core/cache/category_cache_service.dart';
+import 'core/cache/cliente_cache_service.dart';
 import 'core/cache/global_cache_manager.dart';
 import 'core/cache/menu_cache_service.dart';
+import 'core/cache/mesa_cache_service.dart';
+import 'core/cache/pagamento_cache_service.dart';
+import 'core/cache/staff_cache_service.dart';
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
@@ -46,7 +51,11 @@ Future<void> initDependencies() async {
 
   sl.registerLazySingleton(() => MenuCacheService());
   sl.registerLazySingleton(() => CategoryCacheService());
-
+  sl.registerLazySingleton(()=> StaffCacheService());
+  sl.registerLazySingleton(() => ClienteCacheService());
+  sl.registerLazySingleton(() => MesaCacheService());
+  sl.registerLazySingleton(() => PagamentoCacheService());
+  sl.registerLazySingleton(() => PedidoCacheService());
   sl.registerLazySingleton(() => GlobalCacheManager(dio: sl(), menuCache: sl(), categoryCache: sl()));
 
 }

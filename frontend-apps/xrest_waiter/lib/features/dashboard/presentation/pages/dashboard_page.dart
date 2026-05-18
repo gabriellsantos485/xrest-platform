@@ -1,10 +1,3 @@
-/*
- * File: dashboard_page.dart
- * Author: Lua
- * Date: 2026-05-01
- * Description: Main dashboard view showing daily metrics and statistics.
- */
-
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';

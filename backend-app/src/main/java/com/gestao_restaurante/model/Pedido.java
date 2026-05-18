@@ -11,6 +11,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -89,4 +91,8 @@ public class Pedido {
             foreignKey = @ForeignKey(name = "fun_id")
     )
     private Funcionario funcionario;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<ItemPedido> itens = new ArrayList<>();
 }

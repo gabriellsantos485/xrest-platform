@@ -1,10 +1,3 @@
-/*
- * File: profile_page.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-06
- * Description: Authenticated user dashboard displaying client details and logout functionality.
- */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/client_entity.dart';

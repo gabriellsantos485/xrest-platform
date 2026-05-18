@@ -1,10 +1,3 @@
-/*
- * File: lib/features/auth/presentation/bloc/auth_state.dart
- * Author: Elite Flutter Agent
- * Date: 2026-05-01
- * Description: Defines the possible states of the authentication process.
- */
-
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/user.dart';
 

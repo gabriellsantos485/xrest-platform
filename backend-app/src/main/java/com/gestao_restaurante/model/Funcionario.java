@@ -1,5 +1,6 @@
 package com.gestao_restaurante.model;
 
+import com.gestao_restaurante.config.security.UsuarioSistema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -7,8 +8,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.OffsetDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "funcionario", schema = "x_rest")
@@ -17,7 +22,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Funcionario {
+public class Funcionario implements UsuarioSistema {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +39,7 @@ public class Funcionario {
     @Size(max = 60)
     private String sobrenome;
 
-    @Column(name = "fun_telefone", length = 13, nullable = false)
+    @Column(name = "fun_telefone", length = 15, nullable = false)
     @NotBlank
     @Size(max = 13)
     private String telefone;
@@ -73,4 +78,21 @@ public class Funcionario {
     @NotBlank
     @Size(max = 255)
     private String password;
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(
+                new SimpleGrantedAuthority("ROLE_CLIENTE")
+        );
+    }
 }

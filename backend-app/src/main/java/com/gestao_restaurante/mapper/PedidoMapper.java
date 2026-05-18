@@ -1,12 +1,11 @@
 package com.gestao_restaurante.mapper;
 
+import com.gestao_restaurante.dto.ItemPedidoResponseDTO;
 import com.gestao_restaurante.dto.PedidoRequestDTO;
 import com.gestao_restaurante.dto.PedidoResponseDTO;
-import com.gestao_restaurante.model.Cliente;
-import com.gestao_restaurante.model.Funcionario;
-import com.gestao_restaurante.model.Mesa;
-import com.gestao_restaurante.model.Pedido;
-import com.gestao_restaurante.repository.ClienteRepository;
+import com.gestao_restaurante.model.*;
+import java.util.stream.Collectors;
+
 
 public class PedidoMapper {
     public  static Pedido toEntity(PedidoRequestDTO dto, Cliente cliente, Mesa mesa, Funcionario funcionario){
@@ -30,10 +29,26 @@ public class PedidoMapper {
                 entity.getDesconto(),
                 entity.getStatus(),
                 entity.getQuantidadePessoas(),
-                entity.getCliente().getId(),
-                entity.getMesa().getId(),
-                entity.getFuncionario().getId()
+                entity.getCliente() != null ? entity.getCliente().getNome() : null,
+                entity.getMesa() != null ? entity.getMesa().getId() : null,
+                entity.getFuncionario() != null ? entity.getFuncionario().getId() : null,
+                entity.getItens().stream()
+                        .map(PedidoMapper::toItemResponseDTO)
+                        .collect(Collectors.toList())
         );
     }
 
+    public static ItemPedidoResponseDTO toItemResponseDTO(ItemPedido item) {
+        return new ItemPedidoResponseDTO(
+                item.getId(),
+                item.getQuantidade(),
+                item.getValorUnitario(),
+                item.getValorDescontado(),
+                item.getValorTotal(),
+                item.getObservacoes(),
+                item.getPedido().getId(),
+                item.getCardapio().getNome(),
+                item.getStatus()
+        );
+    }
 }

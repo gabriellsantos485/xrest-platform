@@ -1,5 +1,6 @@
 package com.gestao_restaurante.model;
 
+import com.gestao_restaurante.config.security.UsuarioSistema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,8 +9,12 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "cliente", schema = "x_rest")
@@ -18,7 +23,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Cliente {
+public class Cliente implements UsuarioSistema {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,11 +53,11 @@ public class Cliente {
 
     @Column(name = "cli_telefone", nullable = false, unique = true, length = 13)
     @NotBlank
-    @Size(max = 13)
+    @Size(max = 15)
     private String telefone;
 
     @Column(name = "cli_numero", nullable = false)
-    @NotBlank
+    @NotNull
     private Integer numeroCasa;
 
     @Column(name = "cli_rua", nullable = false, length = 40)
@@ -70,9 +75,25 @@ public class Cliente {
     @Size(max = 60)
     private String cidade;
 
-    @Column(name = "cli_password", nullable = false, length = 255)
-    @NotBlank
+    @Column(name = "cli_password", nullable = true, length = 255)
     @Size(max = 255)
     private String password;
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(
+                new SimpleGrantedAuthority("ROLE_CLIENTE")
+        );
+    }
 
 }

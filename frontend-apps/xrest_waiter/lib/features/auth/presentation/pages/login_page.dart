@@ -1,11 +1,3 @@
-/*
- * File: login_page.dart
- * Author: Lua (Agent) & Gabriel/Ryan (X-REST Team)
- * Date: 2026-05-03
- * Description: Implementação responsiva da interface de Login do sistema X-REST.
- * Integra o gerenciamento de estado via BLoC e um Overlay de sincronização pós-login.
- */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/cache/global_cache_manager.dart';

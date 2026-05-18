@@ -1,14 +1,6 @@
-/*
- * File: order_item_entity.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-01
- * Description: Domain entity representing a single item within a shopping cart/order.
- * Encapsulates calculation logic and business rules (e.g., RN001).
- */
 
 import '/features/menu/domain/entities/menu_item_entity.dart';
 
-/// Defines the possible states of an order item based on the data dictionary.
 enum OrderItemStatus { pending, preparing, ready, delivered, canceled }
 
 class OrderItemEntity {

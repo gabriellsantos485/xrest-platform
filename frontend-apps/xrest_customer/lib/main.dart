@@ -1,10 +1,3 @@
-/*
- * File: main.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-01
- * Description: Application entry point. Initializes dependencies and sets up global state providers.
- */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xrest_customer/features/auth/presentation/state/auth_bloc.dart';
@@ -19,10 +12,8 @@ import 'features/menu/presentation/state/menu_bloc.dart';
 import 'features/menu/presentation/state/menu_event.dart';
 
 void main() async {
-  // Ensures Flutter bindings are initialized before calling async code
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize the Dependency Injection container
   await di.init();
 
   runApp(const XRestCustomerApp());
@@ -49,7 +40,7 @@ class XRestCustomerApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           useMaterial3: true,
         ),
-        home: const SplashPage(), // Initial route is now the Splash!
+        home: const SplashPage(),
       ),
     );
   }

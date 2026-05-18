@@ -1,16 +1,7 @@
-/*
- * File: order_model.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-04
- * Description: Data Transfer Object (DTO) responsible for serializing the OrderEntity
- * into a JSON structure ready to be sent to the Spring Boot backend.
- */
-
 import '../../domain/entities/order_entity.dart';
 import '../../domain/entities/order_item_entity.dart';
 
 class OrderModel {
-  /// Transforms the aggregate root (OrderEntity) into a JSON payload.
   static Map<String, dynamic> toJson(OrderEntity order) {
     return {
       'id': order.id,
@@ -18,7 +9,7 @@ class OrderModel {
       'customerCpf': order.customerCpf,
       'isTakeaway': order.isTakeaway,
       'guestCount': order.guestCount,
-      'status': order.status.name.toUpperCase(), // e.g., 'OPEN'
+      'status': order.status.name.toUpperCase(),
       'createdAt': order.createdAt.toIso8601String(),
       'grandTotal': order.grandTotal,
       // The crucial list of items structured for the backend
@@ -26,10 +17,9 @@ class OrderModel {
     };
   }
 
-  /// Transforms individual order items into JSON objects.
   static Map<String, dynamic> _itemToJson(OrderItemEntity item) {
     return {
-      'menuItemId': item.menuItem.id, // Only sending the ID, not the whole product
+      'menuItemId': item.menuItem.id,
       'quantity': item.quantity,
       'unitPrice': item.unitPrice,
       'discount': item.discount,

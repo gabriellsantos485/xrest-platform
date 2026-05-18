@@ -8,7 +8,6 @@ import java.util.List;
 
 public record PedidoRequestDTO(
         Boolean viagem,
-
         Integer quantidadePessoas,
 
         @NotNull(message = "Cliente é obrigatório")

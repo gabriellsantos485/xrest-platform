@@ -1,10 +1,3 @@
-/*
- * File: lib/features/auth/presentation/bloc/auth_event.dart
- * Author: Elite Flutter Agent
- * Date: 2026-05-01
- * Description: Defines the events that can be dispatched to the AuthBloc.
- */
-
 import 'package:equatable/equatable.dart';
 
 abstract class AuthEvent extends Equatable {

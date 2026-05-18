@@ -40,8 +40,6 @@ class MenuItemModel extends MenuItem {
     );
   }
 
-  // Método auxiliar para limpar a string estranha que está a vir do seu backend
-  // (ex: " private String foto = 'https...'")
   static String? _cleanFotoString(String? raw) {
     if (raw == null) return null;
     if (raw.contains('private String foto =')) {

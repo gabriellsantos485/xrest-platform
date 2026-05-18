@@ -5,5 +5,7 @@ public enum MesaStatus {
     LIVRE,
     LOTADA,
     RESERVADA,
-    MANUTENCAO
+    DESABILITADA,
+    MANUTENCAO,
+    OCUPADA;
 }

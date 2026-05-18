@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/xrest/produtos/")
+@RequestMapping("/xrest/produtos")
 @CrossOrigin(origins = "*")
 public class CardapioController {
 

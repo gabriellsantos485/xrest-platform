@@ -1,10 +1,3 @@
-/*
- * File: order_history_page.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-06
- * Description: Master view for Order History. Uses a TabBar to elegantly separate active from past orders.
- */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/order_entity.dart';

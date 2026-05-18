@@ -1,10 +1,3 @@
-/*
- * File: do_login_usecase.dart
- * Author: Elite Flutter Agent
- * Date: 2026-05-01
- * Description: Orchestrates the login business logic and validations.
- */
-
 import '../entities/user.dart';
 import '../repositories/auth_repository.dart';
 

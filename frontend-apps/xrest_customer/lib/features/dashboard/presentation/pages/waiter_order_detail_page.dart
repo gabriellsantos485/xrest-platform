@@ -1,11 +1,3 @@
-/*
- * File: waiter_order_detail_page.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-06
- * Description: Actionable detail view for the Waiter. Allows confirming the
- * delivery of specific items to the table.
- */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/features/order/domain/entities/order_entity.dart';

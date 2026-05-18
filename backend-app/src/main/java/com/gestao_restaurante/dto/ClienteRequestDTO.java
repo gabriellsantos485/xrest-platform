@@ -36,7 +36,7 @@ public record ClienteRequestDTO(
         @NotBlank(message = "Telefone é obrigatório")
         String telefone,
 
-        @NotBlank(message = "Senha é obrigatória")
+
         @Size(min = 8, message = "Senha deve ter no mínimo 8 caracteres")
         String senha
 ) {}

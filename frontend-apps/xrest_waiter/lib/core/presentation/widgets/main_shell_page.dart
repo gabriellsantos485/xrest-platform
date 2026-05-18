@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xrest_waiter/features/orders/presentation/pages/pedidos_page.dart';
 import '../widgets/side_menu.dart';
 import '../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../features/auth/presentation/bloc/auth_state.dart';
@@ -42,7 +43,7 @@ class _MainShellPageState extends State<MainShellPage> {
     // Map index to Page Widget
     final List<Widget> _pages = [
       const DashboardPage(),                      // 0
-      const Center(child: Text('Pedidos')),       // 1
+      const PedidosPage() ,      // 1
       const Center(child: Text('Fila')),          // 2
       const Center(child: Text('Dashboards')),    // 3
       const ConfigurationPage(),                  // 4

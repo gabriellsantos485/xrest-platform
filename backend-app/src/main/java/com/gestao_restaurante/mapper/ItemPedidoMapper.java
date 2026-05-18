@@ -1,9 +1,7 @@
 package com.gestao_restaurante.mapper;
 
 import com.gestao_restaurante.dto.ItemPedidoRequestDTO;
-import com.gestao_restaurante.dto.ItempedidoResponseDTO;
 import com.gestao_restaurante.model.Cardapio;
-import com.gestao_restaurante.model.Funcionario;
 import com.gestao_restaurante.model.ItemPedido;
 import com.gestao_restaurante.model.Pedido;
 

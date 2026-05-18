@@ -1,11 +1,3 @@
-/*
- * File: cart_summary_page.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-07
- * Description: Cart summary screen. Features standard item removal and
- * routes to the QR Code checkout flow for table assignment.
- */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/cart_bloc.dart';

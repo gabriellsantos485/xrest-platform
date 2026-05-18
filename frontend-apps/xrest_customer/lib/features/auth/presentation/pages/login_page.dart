@@ -1,10 +1,3 @@
-/*
- * File: login_page.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-06
- * Description: User authentication UI. Fixed keyboard overflow issues and added password visibility toggle.
- */
-
 import 'package:flutter/material.dart';
 import 'register_page.dart';
 

@@ -1,7 +1,9 @@
 package com.gestao_restaurante.mapper;
 
+import com.gestao_restaurante.dto.FormaPagamentoRequestDTO;
 import com.gestao_restaurante.dto.FuncionarioRequestDTO;
 import com.gestao_restaurante.dto.FuncionarioResponseDTO;
+import com.gestao_restaurante.model.FormaPagamento;
 import com.gestao_restaurante.model.Funcionario;
 
 public class FuncionarioMapper {
@@ -14,7 +16,8 @@ public class FuncionarioMapper {
                 .email(dto.email())
                 .cargo(dto.cargo())
                 .status(dto.status())
-                .username(dto.username()).build();
+                .username(dto.username())
+                .password(dto.senha()).build();
     }
 
     public static FuncionarioResponseDTO toDTO(Funcionario entity){
@@ -30,5 +33,9 @@ public class FuncionarioMapper {
                 entity.getAtualizadoEm(),
                 entity.getUsername()
         );
+    }
+
+    public static void updateEntity(FormaPagamentoRequestDTO dto, FormaPagamento entity) {
+        entity.setNome(dto.nome());
     }
 }

@@ -4,6 +4,7 @@ import com.gestao_restaurante.model.PedidoStatus;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public record PedidoResponseDTO(
         Integer id,
@@ -15,8 +16,9 @@ public record PedidoResponseDTO(
         BigDecimal desconto,
         PedidoStatus status,
         Integer quantidadePessoas,
-        Integer clienteId,
+        String clienteNome,
         Integer mesaId,
-        Integer funcionarioId
+        Integer funcionarioId,
+        List<ItemPedidoResponseDTO> itens
 ) {
 }

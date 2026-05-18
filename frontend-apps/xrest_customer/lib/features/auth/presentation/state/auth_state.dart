@@ -1,10 +1,3 @@
-/*
- * File: auth_state.dart
- * Author: Elite Software Architect Agent
- * Date: 2026-03-06
- * Description: Defines the possible authentication states of the application.
- */
-
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/client_entity.dart';
 
