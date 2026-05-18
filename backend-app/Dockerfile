@@ -12,3 +12,7 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Temporário para debug
+RUN echo "Teste de build"
+ENTRYPOINT ["sh", "-c", "echo DATASOURCE_URL=$SPRING_DATASOURCE_URL && java -jar app.jar"]
