@@ -11,8 +11,10 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
-
-# Temporário para debug
-RUN echo "Teste de build"
-ENTRYPOINT ["sh", "-c", "echo DATASOURCE_URL=$SPRING_DATASOURCE_URL && java -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "java \
+  -Dspring.datasource.url=${SPRING_DATASOURCE_URL} \
+  -Dspring.datasource.username=${SPRING_DATASOURCE_USERNAME} \
+  -Dspring.datasource.password=${SPRING_DATASOURCE_PASSWORD} \
+  -Dspring.datasource.driver-class-name=org.postgresql.Driver \
+  -Dspring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect \
+  -jar app.jar"]
