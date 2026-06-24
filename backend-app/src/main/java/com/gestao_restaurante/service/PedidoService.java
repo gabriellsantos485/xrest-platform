@@ -1,14 +1,15 @@
 package com.gestao_restaurante.service;
 
-
 import com.gestao_restaurante.dto.*;
 import com.gestao_restaurante.mapper.*;
 import com.gestao_restaurante.model.*;
 import com.gestao_restaurante.repository.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -17,13 +18,7 @@ import com.gestao_restaurante.dto.*;
 import com.gestao_restaurante.mapper.PedidoMapper;
 import com.gestao_restaurante.model.*;
 import com.gestao_restaurante.repository.*;
-import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
-import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +31,7 @@ public class PedidoService {
     private final FuncionarioRepository funcionarioRepository;
     private final ClienteRepository clienteRepository;
     private final ItemPedidoRepository itemPedidoRepository;
+    private final ItemPedidoService itemPedidoService;
 
     @Transactional
     public PedidoResponseDTO abrirPedido(PedidoRequestDTO dto, Integer mesaId) {
@@ -70,7 +66,7 @@ public class PedidoService {
                         .quantidade(itemDto.quantidade())
                         .valorUnitario(cardapio.getValorUnidade())
                         .valorTotal(valorTotalItem)
-                        .status(ItemPedidoStatus.EM_PREPARO)
+                        .status(ItemPedidoStatus.NAO_INICIADO)
                         .observacoes(itemDto.observacoes())
                         .build();
 
@@ -97,9 +93,31 @@ public class PedidoService {
         return PedidoMapper.toDTO(consultarPedidoEntity(id));
     }
 
+    public List<PedidoResponseDTO> consultarPedidoEmAndamento(){
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null
+                || !authentication.isAuthenticated()
+                || "anonymousUser".equals(authentication.getName())) {
+            throw new RuntimeException("Usuário não autenticado");
+        }
+
+        Cliente cliente = clienteRepository
+                .findByEmail(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        List<Pedido> pedidos = pedidoRepository.findByClienteIdAndStatusOrderByCriadoEmDesc(cliente.getId(), PedidoStatus.ABERTO);
+
+        return pedidos.stream()
+                .map(PedidoMapper::toDTO)
+                .toList();
+
+    }
+
     @Transactional
-    public void fecharPedido(Integer id) {
-        Pedido pedido = consultarPedidoEntity(id);
+    public void fecharPedido(PedidoFechamentoRequestDTO pedidoDTO, Integer id) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow();
         pedido.setStatus(PedidoStatus.CONCLUÍDO);
         pedido.setAtualizadoEm(OffsetDateTime.now());
 
@@ -113,11 +131,9 @@ public class PedidoService {
     @Transactional
     public PedidoResponseDTO adicionarItens(Integer pedidoId, List<ItemPedidoRequestDTO> itensDTO) {
         Pedido pedido = consultarPedidoEntity(pedidoId);
-
-        if (!"ABERTO".equals(pedido.getStatus())) {
+        if  (pedido.getStatus() == PedidoStatus.CONCLUÍDO || pedido.getStatus() == PedidoStatus.CANCELADO) {
             throw new IllegalStateException("Não é possível adicionar itens a um pedido não aberto.");
         }
-
         for (ItemPedidoRequestDTO dto : itensDTO) {
             Cardapio cardapio = cardapioRepository.findById(dto.cardapioId()).orElseThrow();
             BigDecimal valorItemTotal = cardapio.getValorUnidade().multiply(BigDecimal.valueOf(dto.quantidade()));
@@ -188,8 +204,89 @@ public class PedidoService {
                 .collect(Collectors.toList());
     }
 
+    public List<PedidoResumoDTO> listarUltimosPedidos() {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null
+                || !authentication.isAuthenticated()
+                || "anonymousUser".equals(authentication.getName())) {
+            throw new RuntimeException("Usuário não autenticado");
+        }
+
+        Cliente cliente = clienteRepository
+                .findByEmail(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        return pedidoRepository
+                .findTop10ByClienteIdAndStatusOrderByCriadoEmDesc(cliente.getId(), PedidoStatus.CONCLUÍDO)
+                .stream()
+                .map(p -> new PedidoResumoDTO(
+                        p.getId(),
+                        p.getStatus().name(),
+                        p.getValorTotal(),
+                        p.getCriadoEm()
+                ))
+                .toList();
+    }
+
+    public List<ItemPedidoFilaResponseDTO> listarFila(){
+        return itemPedidoService.listarItens();
+    }
+
+    public RelatorioResponseDTO gerarRelatorio(){
+        OffsetDateTime inicio = OffsetDateTime.now()
+                .withDayOfMonth(1)
+                .toLocalDate()
+                .atStartOfDay()
+                .atOffset(OffsetDateTime.now().getOffset());
+
+        OffsetDateTime fim = inicio.plusMonths(1);
+
+        OffsetDateTime inicioAno = OffsetDateTime.now()
+                .withDayOfYear(1)
+                .toLocalDate()
+                .atStartOfDay()
+                .atOffset(OffsetDateTime.now().getOffset());
+
+        OffsetDateTime fimAno = OffsetDateTime.now();
+
+        OffsetDateTime inicioDia = OffsetDateTime.now()
+                .toLocalDate()
+                .atStartOfDay()
+                .atOffset(OffsetDateTime.now().getOffset());
+
+        OffsetDateTime fimDia = inicio.plusDays(1);
+
+        Integer quantidadeTotalMesPedido = pedidoRepository.countByStatusAndCriadoEmBetween(
+                PedidoStatus.CONCLUÍDO,
+                inicio,
+                fim
+        );
+        Integer quantidadeTotalCanceladoMes = pedidoRepository.countByStatusAndCriadoEmBetween(
+                PedidoStatus.CANCELADO,
+                inicio,
+                fim
+        );
+
+        BigDecimal faturamenteMes = pedidoRepository.sumFaturamentoPorPeriodo(PedidoStatus.CONCLUÍDO, inicio, fim);
+        BigDecimal faturamentoAno = pedidoRepository.sumFaturamentoPorPeriodo(PedidoStatus.CONCLUÍDO, inicioAno, fimAno);
+        Integer totalPedidoDia = pedidoRepository.countPedidosNoDia(inicioDia, fimDia);
+
+        RelatorioResponseDTO relatorio = new RelatorioResponseDTO(
+                quantidadeTotalMesPedido,
+                quantidadeTotalCanceladoMes,
+                totalPedidoDia,
+                faturamenteMes,
+                faturamentoAno,
+                pedidoRepository.findTopItensPorFaturamento(inicio, fim, PedidoStatus.CONCLUÍDO, PageRequest.of(0, 5))
+        );
+        return relatorio;
+    }
     private Pedido consultarPedidoEntity(Integer id) {
         return pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado: " + id));
     }
+
 }

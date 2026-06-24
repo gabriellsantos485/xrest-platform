@@ -1,10 +1,10 @@
 package com.gestao_restaurante.mapper;
 
+import com.gestao_restaurante.dto.ItemPedidoFilaResponseDTO;
 import com.gestao_restaurante.dto.ItemPedidoRequestDTO;
 import com.gestao_restaurante.model.Cardapio;
 import com.gestao_restaurante.model.ItemPedido;
 import com.gestao_restaurante.model.Pedido;
-
 import java.math.BigDecimal;
 
 public class ItemPedidoMapper {
@@ -25,8 +25,15 @@ public class ItemPedidoMapper {
                 .pedido(pedido)
                 .cardapio(produto).build();
     }
-    /*
-    public static ItempedidoResponseDTO toDto(){
-        return new ItempedidoResponseDTO();
-    }*/
+
+    public static ItemPedidoFilaResponseDTO toDto(ItemPedido itemPedido) {
+        return new ItemPedidoFilaResponseDTO(
+                itemPedido.getCardapio().getNome(), // Buscando o nome do prato/bebida através do relacionamento
+                itemPedido.getQuantidade(),
+                itemPedido.getObservacoes(),
+                itemPedido.getStatus(),
+                itemPedido.getPedido().getId(),
+                itemPedido.getId()
+        );
+    }
 }

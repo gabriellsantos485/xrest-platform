@@ -1,51 +1,29 @@
 package com.gestao_restaurante.controller;
 
-import com.gestao_restaurante.service.JwtService;
-import com.gestao_restaurante.dto.LoginRequestDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.gestao_restaurante.dto.*;
+import com.gestao_restaurante.service.AuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/xrest/v1/login")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthService authService;
 
-    @Autowired
-    private JwtService jwtService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
-    @Autowired
-    private UserDetailsService userDetailsService; // Ou o seu UserServiceDetails
+    @PostMapping("/cliente")
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto) {
+        return ResponseEntity.ok(authService.verifyCliente(dto));
+    }
 
-    @PostMapping
-    public ResponseEntity<String> authenticate(@RequestBody LoginRequestDTO request) {
-        System.out.println("ENTRANDO NO MÉTODO");
-
-        // Autentica o usuário no Spring Security
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.email(),
-                        request.password()
-                )
-        );
-
-        // Se a autenticação der certo, carrega os dados do usuário
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.email());
-
-        // Gera o token JWT
-        final String jwt = jwtService.generateToken(userDetails);
-
-        // Retorna o token para o cliente
-        return ResponseEntity.ok(jwt);
+    @PostMapping("/funcionario")
+    public ResponseEntity<LoginFuncionarioResponseDTO> login(@RequestBody LoginFuncionarioRequestDTO dto) {
+        return ResponseEntity.ok(authService.verifyFuncionario(dto));
     }
 }
 

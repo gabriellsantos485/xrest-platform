@@ -2,16 +2,12 @@ package com.gestao_restaurante.controller;
 
 import com.gestao_restaurante.dto.CardapioRequestDTO;
 import com.gestao_restaurante.dto.CardapioResponseDTO;
-import com.gestao_restaurante.mapper.CardapioMapper;
-import com.gestao_restaurante.model.Cardapio;
 import com.gestao_restaurante.service.CardapioService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @RestController
-@RequestMapping("/xrest/produtos")
+@RequestMapping("/xrest/v1/produtos")
 @CrossOrigin(origins = "*")
 public class CardapioController {
 
@@ -20,8 +16,8 @@ public class CardapioController {
     public CardapioController(CardapioService service){
         this.service = service;
     }
-    @PostMapping
-    public CardapioResponseDTO criar (@RequestBody CardapioRequestDTO dto){
+    @PostMapping("/cadastrar")
+        public CardapioResponseDTO criar (@RequestBody CardapioRequestDTO dto){
         return service.criar(dto);
     }
 

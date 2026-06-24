@@ -6,21 +6,20 @@ import com.gestao_restaurante.dto.MesaResponseDTO;
 import com.gestao_restaurante.service.MesaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping(ApiRoutes.MESAS)
+@RequestMapping("/xrest/v1/mesa")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class MesaController {
 
     private final MesaService mesaService;
 
-    /// Retrieves a list of all registered tables.
     @GetMapping
     public ResponseEntity<List<MesaResponseDTO>> listarTodas() {
         List<MesaResponseDTO> mesas = mesaService.listarTodas();
@@ -33,13 +32,13 @@ public class MesaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PatchMapping(ApiRoutes.MESAS_DESABILITAR)
+    @PatchMapping("/{id}/desabilitar")
     public ResponseEntity<Void> desabilitarMesa(@PathVariable Integer id) {
         mesaService.desabilitarMesa(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(ApiRoutes.MESAS_TRANSFERIR)
+    @PostMapping("/{idOrigem}/transferir/{idDestino}")
     public ResponseEntity<Void> trocarMesa(
             @PathVariable Integer idOrigem,
             @PathVariable Integer idDestino) {
@@ -47,4 +46,10 @@ public class MesaController {
         mesaService.trocarMesa(idOrigem, idDestino);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping()
+    public ResponseEntity<Void> atualizar(){
+        return ResponseEntity.ok().build();
+    }
+
 }

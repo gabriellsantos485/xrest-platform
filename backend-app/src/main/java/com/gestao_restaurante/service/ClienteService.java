@@ -7,8 +7,6 @@ import com.gestao_restaurante.model.Cliente;
 import com.gestao_restaurante.repository.ClienteRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -31,6 +29,13 @@ public class ClienteService {
 
     public ClienteResponseDTO verCliente(Integer id){
         Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Cliente não encontrado"));
+        return ClienteMapper.toDTO(cliente);
+    }
+
+    public ClienteResponseDTO verCliente(String email){
+        Cliente cliente = clienteRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new RuntimeException("Cliente não encontrado"));
         return ClienteMapper.toDTO(cliente);

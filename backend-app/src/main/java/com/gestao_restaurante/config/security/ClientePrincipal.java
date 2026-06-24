@@ -3,7 +3,6 @@ package com.gestao_restaurante.config.security;
 import com.gestao_restaurante.model.Cliente;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
 

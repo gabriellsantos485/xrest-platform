@@ -2,14 +2,11 @@ package com.gestao_restaurante.service;
 
 import com.gestao_restaurante.dto.FuncionarioRequestDTO;
 import com.gestao_restaurante.dto.FuncionarioResponseDTO;
-import com.gestao_restaurante.mapper.ClienteMapper;
 import com.gestao_restaurante.mapper.FuncionarioMapper;
-import com.gestao_restaurante.model.Cliente;
 import com.gestao_restaurante.model.Funcionario;
 import com.gestao_restaurante.repository.FuncionarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 

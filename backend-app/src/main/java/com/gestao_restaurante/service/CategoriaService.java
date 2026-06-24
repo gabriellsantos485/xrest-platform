@@ -1,13 +1,11 @@
 package com.gestao_restaurante.service;
 
-import com.gestao_restaurante.dto.CardapioResponseDTO;
 import com.gestao_restaurante.dto.CategoriaRequestDTO;
 import com.gestao_restaurante.dto.CategoriaResponseDTO;
 import com.gestao_restaurante.mapper.CategoriaMapper;
 import com.gestao_restaurante.model.Categoria;
 import com.gestao_restaurante.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

@@ -1,20 +1,17 @@
 package com.gestao_restaurante.controller;
 
-import com.gestao_restaurante.dto.ItemPedidoRequestDTO;
-import com.gestao_restaurante.dto.PedidoRequestDTO;
-import com.gestao_restaurante.dto.PedidoResponseDTO;
+import com.gestao_restaurante.dto.*;
 import com.gestao_restaurante.service.PedidoService;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/xrest/v1/pedidos")
+@RequestMapping("/xrest/v1/pedido")
 @CrossOrigin(origins = "*")
 public class PedidoController {
 
@@ -25,9 +22,8 @@ public class PedidoController {
     }
 
     @PostMapping("/mesa/{mesaId}/pedido")
-    public String abrirPedido (@RequestBody PedidoRequestDTO dto, @PathVariable Integer mesaId){
-         pedidoService.abrirPedido(dto, mesaId);
-         return "Tá cadastrado amigão, confia";
+    public ResponseEntity<PedidoResponseDTO> abrirPedido (@RequestBody PedidoRequestDTO dto, @PathVariable Integer mesaId){
+         return ResponseEntity.ok(pedidoService.abrirPedido(dto, mesaId));
     }
 
     @GetMapping
@@ -43,8 +39,9 @@ public class PedidoController {
     }
 
     @PatchMapping("/{id}/fechar")
-    public ResponseEntity<Void> fecharPedido(@PathVariable Integer id) {
-        pedidoService.fecharPedido(id);
+    public ResponseEntity<Void> fecharPedido(@RequestBody PedidoFechamentoRequestDTO pedidoDTO, @PathVariable Integer id) {
+        System.out.println("BATEU AQUI");
+        pedidoService.fecharPedido(pedidoDTO, id);
         return ResponseEntity.noContent().build();
     }
 
@@ -99,5 +96,26 @@ public class PedidoController {
     public ResponseEntity<List<PedidoResponseDTO>> listarPedidosPorCliente(@PathVariable Integer clienteId) {
         List<PedidoResponseDTO> pedidos = pedidoService.listarPedidosPorCliente(clienteId);
         return ResponseEntity.ok(pedidos);
+    }
+
+    @GetMapping("/ultimos-pedidos")
+    public ResponseEntity<List<PedidoResumoDTO>> listarUltimosPedidos(){
+        List<PedidoResumoDTO> pedidos = pedidoService.listarUltimosPedidos();
+        return ResponseEntity.ok(pedidos);
+    }
+
+    @GetMapping("/pedido-andamento")
+    public ResponseEntity<List<PedidoResponseDTO>> getPedidoAndamento(){
+        return ResponseEntity.ok(pedidoService.consultarPedidoEmAndamento());
+    }
+
+    @GetMapping("/fila")
+    public ResponseEntity<List<ItemPedidoFilaResponseDTO>> listarFila(){
+        return ResponseEntity.ok(pedidoService.listarFila());
+    }
+
+    @GetMapping("/relatorio")
+    public ResponseEntity<RelatorioResponseDTO> gerarRelatorio(){
+        return ResponseEntity.ok(pedidoService.gerarRelatorio());
     }
 }

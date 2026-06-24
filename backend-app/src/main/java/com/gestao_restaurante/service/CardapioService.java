@@ -3,20 +3,15 @@ package com.gestao_restaurante.service;
 import com.gestao_restaurante.dto.CardapioRequestDTO;
 import com.gestao_restaurante.dto.CardapioResponseDTO;
 import com.gestao_restaurante.mapper.CardapioMapper;
-import com.gestao_restaurante.mapper.CategoriaMapper;
 import com.gestao_restaurante.model.Cardapio;
 import com.gestao_restaurante.model.Categoria;
 import com.gestao_restaurante.model.StatusCardapio;
 import com.gestao_restaurante.repository.CardapioRepository;
 import com.gestao_restaurante.repository.CategoriaRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 
 @Service
 public class CardapioService {

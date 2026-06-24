@@ -5,13 +5,11 @@ import com.gestao_restaurante.dto.ClienteResponseDTO;
 import com.gestao_restaurante.service.ClienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/xrest")
+@RequestMapping("/xrest/v1/cliente")
 @CrossOrigin(origins = "*")
 public class ClienteController {
     ClienteService clienteService;
@@ -20,14 +18,14 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-    @GetMapping("/clientes")
+    @GetMapping("/listar")
     public ResponseEntity<List<ClienteResponseDTO>> listarClientes(){
         return ResponseEntity.ok(
                 clienteService.listarClientes()
         );
     }
 
-    @GetMapping("/cliente/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ClienteResponseDTO> verCliente(@PathVariable Integer id){
         return ResponseEntity.ok(
                 clienteService.verCliente(id)
@@ -35,7 +33,7 @@ public class ClienteController {
     }
 
 
-    @PostMapping("/cliente/cadastrar")
+    @PostMapping("/cadastrar")
     public ResponseEntity<ClienteResponseDTO> criarCliente(@RequestBody ClienteRequestDTO dto){
         ClienteResponseDTO cliente =
                 clienteService.criarCliente(dto);

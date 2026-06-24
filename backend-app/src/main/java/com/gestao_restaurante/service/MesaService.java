@@ -1,7 +1,5 @@
 package com.gestao_restaurante.service;
 
-
-
 import com.gestao_restaurante.dto.MesaRequestDTO;
 import com.gestao_restaurante.dto.MesaResponseDTO;
 import com.gestao_restaurante.exception.BusinessRuleException;
@@ -13,12 +11,9 @@ import com.gestao_restaurante.repository.MesaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-/// Orchestrates all business logic related to the restaurant's physical tables.
-/// This service maps to the operational use cases and guarantees ACID compliance through transactional boundaries.
 @Service
 @RequiredArgsConstructor
 public class MesaService {

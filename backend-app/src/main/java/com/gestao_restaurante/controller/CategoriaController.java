@@ -4,11 +4,10 @@ import com.gestao_restaurante.dto.CategoriaRequestDTO;
 import com.gestao_restaurante.dto.CategoriaResponseDTO;
 import com.gestao_restaurante.service.CategoriaService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @RestController
-@RequestMapping("/xrest/categorias/")
+@RequestMapping("/xrest/v1/categoria")
 @CrossOrigin(origins = "*")
 public class CategoriaController {
 

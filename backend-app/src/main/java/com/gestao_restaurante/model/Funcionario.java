@@ -10,7 +10,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -41,7 +40,7 @@ public class Funcionario implements UsuarioSistema {
 
     @Column(name = "fun_telefone", length = 15, nullable = false)
     @NotBlank
-    @Size(max = 13)
+    @Size(max = 15)
     private String telefone;
 
     @Column(name = "fun_email", length = 120, nullable = false, unique = true)
