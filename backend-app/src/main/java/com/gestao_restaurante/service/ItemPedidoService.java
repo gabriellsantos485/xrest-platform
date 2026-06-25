@@ -95,6 +95,10 @@ public class ItemPedidoService {
             pedido.setValorTotal(pedido.getValorTotal().subtract(item.getValorTotal()));
             pedidoRepository.save(pedido);
         }
+
+        Pedido pedido = item.getPedido();
+        if (pedido.getStatus() == PedidoStatus.ABERTO)
+            pedido.setStatus(PedidoStatus.EM_ANDAMENTO);
         item = itemPedidoRepository.save(item);
 
         // 3. Monta e retorna o DTO de resposta para o Flutter
