@@ -1,8 +1,8 @@
 package com.gestao_restaurante.service;
 
+import com.gestao_restaurante.dto.AtualizarStatusItemPedidoRequestDTO;
 import com.gestao_restaurante.dto.ItemPedidoFilaResponseDTO;
 import com.gestao_restaurante.dto.ItemPedidoRequestDTO;
-import com.gestao_restaurante.dto.ItemPedidoResponseDTO;
 import com.gestao_restaurante.mapper.ItemPedidoMapper;
 import com.gestao_restaurante.model.*;
 import com.gestao_restaurante.repository.CardapioRepository;
@@ -82,16 +82,23 @@ public class ItemPedidoService {
     }
 
     @Transactional
-    public ItemPedidoFilaResponseDTO alterarStatus(Integer itemId){
-        ItemPedido item = itemPedidoRepository.findById(itemId).orElseThrow();
-        Pedido pedido = pedidoRepository.findById(item.getPedido().getId()).orElseThrow();
-        if (item.getStatus() == ItemPedidoStatus.NAO_INICIADO)
-            item.setStatus(ItemPedidoStatus.EM_PREPARO);
-            if (pedido.getStatus() == PedidoStatus.ABERTO)
-                pedido.setStatus(PedidoStatus.EM_ANDAMENTO);
-        else if (item.getStatus() == ItemPedidoStatus.EM_PREPARO)
-            item.setStatus(ItemPedidoStatus.PRONTO);
-        itemPedidoRepository.save(item);
-        return ItemPedidoMapper.toDto(item);
+    public ItemPedidoFilaResponseDTO alterarStatus(Integer itemId, AtualizarStatusItemPedidoRequestDTO dto) {
+        ItemPedido item = itemPedidoRepository.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Item do pedido não encontrado"));
+
+        // 2. Atualiza o status do item com o valor que veio do Flutter (EM_PREPARO, PRONTO, etc)
+        System.out.println("NOVO STATUS: " + dto.novoStatus());
+        item.setStatus(dto.novoStatus());
+
+        if (dto.novoStatus() == ItemPedidoStatus.CANCELADO) {
+            Pedido pedido = item.getPedido();
+            pedido.setValorTotal(pedido.getValorTotal().subtract(item.getValorTotal()));
+            pedidoRepository.save(pedido);
+        }
+        item = itemPedidoRepository.save(item);
+
+        // 3. Monta e retorna o DTO de resposta para o Flutter
+        ItemPedidoFilaResponseDTO response = ItemPedidoMapper.toDto(item);
+        return response;
     }
 }

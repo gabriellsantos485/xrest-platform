@@ -36,7 +36,8 @@ public class SecurityConfig {
                                 "/xrest/v1/pedido/mesa/*/pedido",
                                 "/xrest/v1/produtos",
                                 "/xrest/v1/cliente/cadastrar",
-                                "/xrest/v1/funcionario/**"
+                                "/xrest/v1/funcionario/**",
+                                "/xrest/v1/pedido/top-itens"
                         ).permitAll()
 
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN", "CAIXA")

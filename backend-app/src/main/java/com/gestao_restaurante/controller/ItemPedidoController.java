@@ -1,8 +1,7 @@
 package com.gestao_restaurante.controller;
 
+import com.gestao_restaurante.dto.AtualizarStatusItemPedidoRequestDTO;
 import com.gestao_restaurante.dto.ItemPedidoFilaResponseDTO;
-import com.gestao_restaurante.model.ItemPedido;
-import com.gestao_restaurante.repository.ItemPedidoRepository;
 import com.gestao_restaurante.service.ItemPedidoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ public class ItemPedidoController {
     }
 
     @PutMapping("/status/{itemId}")
-    public ResponseEntity<ItemPedidoFilaResponseDTO> listar(@PathVariable Integer itemId){
-        return ResponseEntity.ok(itemPedidoService.alterarStatus(itemId));
+    public ResponseEntity<ItemPedidoFilaResponseDTO> listar(@PathVariable Integer itemId, @RequestBody AtualizarStatusItemPedidoRequestDTO dto){
+        return ResponseEntity.ok(itemPedidoService.alterarStatus(itemId, dto));
     }
 }

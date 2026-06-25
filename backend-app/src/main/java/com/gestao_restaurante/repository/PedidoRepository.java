@@ -79,4 +79,9 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
             @Param("fim") OffsetDateTime fim
     );
 
+    List<Pedido> findByClienteIdAndStatusInOrderByCriadoEmDesc(
+            Integer clienteId,
+            List<PedidoStatus> status
+    );
+
 }

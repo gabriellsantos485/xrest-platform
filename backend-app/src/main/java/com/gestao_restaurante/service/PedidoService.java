@@ -93,7 +93,8 @@ public class PedidoService {
         return PedidoMapper.toDTO(consultarPedidoEntity(id));
     }
 
-    public List<PedidoResponseDTO> consultarPedidoEmAndamento(){
+    public List<PedidoResponseDTO> consultarPedidoEmAndamento() {
+
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
@@ -107,12 +108,18 @@ public class PedidoService {
                 .findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        List<Pedido> pedidos = pedidoRepository.findByClienteIdAndStatusOrderByCriadoEmDesc(cliente.getId(), PedidoStatus.ABERTO);
+        List<Pedido> pedidos = pedidoRepository
+                .findByClienteIdAndStatusInOrderByCriadoEmDesc(
+                        cliente.getId(),
+                        List.of(
+                                PedidoStatus.ABERTO,
+                                PedidoStatus.EM_ANDAMENTO
+                        )
+                );
 
         return pedidos.stream()
                 .map(PedidoMapper::toDTO)
                 .toList();
-
     }
 
     @Transactional
@@ -257,7 +264,7 @@ public class PedidoService {
                 .atStartOfDay()
                 .atOffset(OffsetDateTime.now().getOffset());
 
-        OffsetDateTime fimDia = inicio.plusDays(1);
+        OffsetDateTime fimDia = inicioDia.plusDays(1);
 
         Integer quantidadeTotalMesPedido = pedidoRepository.countByStatusAndCriadoEmBetween(
                 PedidoStatus.CONCLUÍDO,
@@ -284,6 +291,21 @@ public class PedidoService {
         );
         return relatorio;
     }
+
+
+    public List<ItensMaisVendidosResponseDTO> getItensMaisVendidos(){
+        OffsetDateTime inicio = OffsetDateTime.now()
+                .withDayOfMonth(1)
+                .toLocalDate()
+                .atStartOfDay()
+                .atOffset(OffsetDateTime.now().getOffset());
+
+        OffsetDateTime fim = inicio.plusMonths(1);
+
+        List<ItensMaisVendidosResponseDTO> itens = pedidoRepository.findTopItensPorFaturamento(inicio, fim, PedidoStatus.CONCLUÍDO, PageRequest.of(0, 5));
+        return itens;
+    }
+
     private Pedido consultarPedidoEntity(Integer id) {
         return pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado: " + id));

@@ -118,4 +118,9 @@ public class PedidoController {
     public ResponseEntity<RelatorioResponseDTO> gerarRelatorio(){
         return ResponseEntity.ok(pedidoService.gerarRelatorio());
     }
+
+    @GetMapping("/top-itens")
+    public ResponseEntity<List<ItensMaisVendidosResponseDTO>> getItensMaisVendidos(){
+        return ResponseEntity.ok(pedidoService.getItensMaisVendidos());
+    }
 }
